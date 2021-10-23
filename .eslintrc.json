@@ -44,7 +44,7 @@
         "allowBind": false
       }
     ],
-    "react/prop-types": [2, {}],
+    "react/prop-types": [0, {}],
     "no-unused-vars": "warn"
   },
   "env": {
