@@ -4,10 +4,10 @@ import { Flex } from "@chakra-ui/react";
 import Navigation from "./Navigation";
 //data
 import { navigationData } from "../../data/nav-data";
+
 function SideNav() {
   // load navigation data with dummy
   const navData = navigationData();
-  //   console.log(navData);
 
   return (
     <Flex

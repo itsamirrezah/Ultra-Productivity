@@ -4,14 +4,14 @@ import {
   AccordionButton,
 } from "@chakra-ui/react";
 import BasicItem from "./BasicItem";
-function AccordionSection({ text, children }) {
+function AccordionSection({ text, icon, children }) {
   return (
     <ChAccordionItem>
       <AccordionButton
         p="0"
         _focus={{ boxShadow: "none", bgColor: "transparent" }}
       >
-        <BasicItem text={text} />
+        <BasicItem text={text} icon={icon} />
       </AccordionButton>
       {children}
     </ChAccordionItem>

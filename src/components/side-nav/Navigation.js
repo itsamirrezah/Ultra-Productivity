@@ -1,5 +1,6 @@
 //imports
 import { VStack } from "@chakra-ui/react";
+import Logo from "../UI/Logo";
 //components
 import NavItems from "./NavItems";
 
@@ -23,6 +24,7 @@ function Navigation({ items }) {
       bgColor="#28112B"
     >
       {/* logo or something */}
+      <Logo />
       {/* navigation items */}
       <NavItems items={items} />
     </VStack>

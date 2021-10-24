@@ -1,3 +1,6 @@
+// imports
+import { FaListUl, FaSun, FaHashtag } from "react-icons/fa";
+
 //models
 import Project from "../model/Project";
 import Tag from "../model/Tag";
@@ -30,14 +33,14 @@ const colors = { 0: "red", 1: "yellow", 2: "blue" };
 
 export function navigationData(projects, tags) {
   return [
-    { id: "today", icon: null, text: "Today", type: 0, link: "/tags/today" },
+    { id: "today", icon: FaSun, text: "Today", type: 0, link: "/tags/today" },
     {
       type: 1,
       items: [
         //projects
         {
           text: "Projects",
-          icon: null,
+          icon: FaListUl,
           list: projects ? projects : getDummyProjects(),
           button: {
             text: "create new projects",
@@ -47,7 +50,7 @@ export function navigationData(projects, tags) {
         //tags
         {
           text: "Tags",
-          icon: null,
+          icon: FaHashtag,
           list: tags ? tags : getDummyTags(),
           button: {
             text: "create new tags",
