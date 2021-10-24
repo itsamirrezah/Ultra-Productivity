@@ -18,6 +18,7 @@ function AccordionItems({ items }) {
                     key={idx}
                     title={item.title}
                     color={item.color}
+                    link={`${it.route}/${item.id}`}
                   />
                 );
               })}

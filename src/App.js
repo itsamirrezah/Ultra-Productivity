@@ -1,10 +1,9 @@
 //imports
 import { HStack } from "@chakra-ui/layout";
+import { Route } from "react-router-dom";
 //components
 import SideNav from "./components/side-nav/SideNav";
 import Tasks from "./components/pages/Tasks";
-import { Route } from "react-router";
-
 function App() {
   return (
     <HStack alignItems="stretch">

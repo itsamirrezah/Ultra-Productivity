@@ -5,5 +5,6 @@ export default function ({ id, title, color }) {
     id: id ? id : uuid(),
     title: title,
     color: color,
+    taskIds: [],
   };
 }

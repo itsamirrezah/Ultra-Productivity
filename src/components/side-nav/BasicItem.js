@@ -1,4 +1,4 @@
-import { Link as ChakraLink, HStack, Heading } from "@chakra-ui/react";
+import { HStack, Heading } from "@chakra-ui/react";
 
 function BasicItem({ text, icon }) {
   return (

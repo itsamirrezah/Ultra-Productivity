@@ -1,37 +1,9 @@
 // imports
 import { FaListUl, FaSun, FaHashtag } from "react-icons/fa";
+import appData from "../data/app-data";
+const { tags: tagList, projects: projectList } = appData();
 
-//models
-import Project from "../model/Project";
-import Tag from "../model/Tag";
-
-function getDummyProjects() {
-  const projects = {};
-  for (let i = 0; i < 5; i++) {
-    const p = Project({
-      title: `project-${i + 1}`,
-      color: colors[(i + 1) % 3],
-    });
-    projects[p.id] = p;
-  }
-  return projects;
-}
-
-function getDummyTags() {
-  const tags = {};
-  for (let i = 0; i < 5; i++) {
-    const t = Tag({
-      title: `tag-${i + 1}`,
-      color: colors[(i + 1) % 3],
-    });
-    tags[t.id] = t;
-  }
-  return tags;
-}
-
-const colors = { 0: "red", 1: "yellow", 2: "blue" };
-
-export function navigationData(projects, tags) {
+export default function (projects, tags) {
   return [
     { id: "today", icon: FaSun, text: "Today", type: 0, link: "/tags/today" },
     {
@@ -41,7 +13,8 @@ export function navigationData(projects, tags) {
         {
           text: "Projects",
           icon: FaListUl,
-          list: projects ? projects : getDummyProjects(),
+          route: "/projects",
+          list: projects ? projects : projectList,
           button: {
             text: "create new projects",
           },
@@ -51,7 +24,8 @@ export function navigationData(projects, tags) {
         {
           text: "Tags",
           icon: FaHashtag,
-          list: tags ? tags : getDummyTags(),
+          route: "/tags",
+          list: tags ? tags : tagList,
           button: {
             text: "create new tags",
           },
