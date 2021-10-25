@@ -32,6 +32,7 @@ function generateTasks() {
   for (let i = 0; i < 100; i++) {
     const t = Task({
       title: `task-${i + 1}`,
+      isDone: !Math.floor(Math.random() * 2),
     });
     tasks = { ...tasks, [t.id]: t };
   }
