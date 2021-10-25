@@ -4,6 +4,7 @@ import { VStack, Box } from "@chakra-ui/react";
 //data
 import appData from "../../data/app-data";
 import TaskItems from "../tasks/TaskItems";
+import Header from "../UI/Header";
 
 function Tasks() {
   const data = appData();
@@ -16,9 +17,16 @@ function Tasks() {
   });
 
   return (
-    <VStack w="full" spacing="8" py="8" bgColor="#28112B" minH="100vh">
+    <VStack
+      w="full"
+      spacing="8"
+      py="8"
+      bgColor="#28112B"
+      minH="100vh"
+      px={["2", "4", "8"]}
+    >
       {/* header */}
-      <Box>HEADER</Box>
+      <Header />
       <VStack w="full" spacing="0">
         {/* working status */}
         <Box>Working: 2h 3m</Box>
