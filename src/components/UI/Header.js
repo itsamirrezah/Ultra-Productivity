@@ -6,7 +6,7 @@ function Header() {
   return (
     <HStack w="full" justifyContent="space-between">
       <HStack spacing="0">
-        <IconButton size="md" variant="unstyled" icon={<BsListNested />} />
+        <IconButton size="md" variant="link" icon={<BsListNested />} />
         <Heading fontSize="xx-large">{`Overview`}</Heading>
       </HStack>
 

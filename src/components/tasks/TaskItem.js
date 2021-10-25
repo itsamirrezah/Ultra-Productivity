@@ -18,7 +18,6 @@ function TaskItem({ task, subStyle }) {
   return (
     <Box
       w="full"
-      px="4"
       pos="relative"
       {...subStyle}
       _hover={{

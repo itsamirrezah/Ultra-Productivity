@@ -1,5 +1,6 @@
 //imports
 import { VStack } from "@chakra-ui/react";
+import SubtaskItems from "./SubtaskItems";
 //components
 import TaskItem from "./TaskItem";
 
@@ -18,23 +19,7 @@ function TaskItems({ tasks }) {
             maxW="4xl"
           >
             <TaskItem task={task} />
-            {task.subtasks &&
-              task.subtasks.map((subtask) => {
-                return (
-                  <TaskItem
-                    key={subtask.id}
-                    task={subtask}
-                    subStyle={{
-                      w: "95%",
-                      alignSelf: "flex-end",
-                      spacing: "0.5",
-                      bgColor: "rgba(255,255,255,0.1)",
-                      py: "1",
-                      rounded: "md",
-                    }}
-                  />
-                );
-              })}
+            {task.subtasks.length > 0 && <SubtaskItems items={task.subtasks} />}
           </VStack>
         );
       })}
