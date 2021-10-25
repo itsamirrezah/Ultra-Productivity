@@ -37,6 +37,7 @@ function generateTasks() {
   }
 }
 
+// todo: potential bug
 function generateRelation() {
   const projectList = Object.keys(projects);
   const tagList = Object.keys(tags);
@@ -54,7 +55,6 @@ function generateRelation() {
         taskIds: [...project.taskIds, task.id],
       };
       task = { ...task, projectId: project.id };
-      project.taskIds.push(task.id);
       projects = { ...projects, [project.id]: project };
     }
     //randomly choose => have a tagId or not
@@ -72,12 +72,15 @@ function generateRelation() {
       for (let i = 0; i < 5; i++) {
         let randomTask =
           tasks[taskList[Math.floor(Math.random() * taskList.length)]];
+
         if (
-          (randomTask.projectId && randomTask.projectId !== task.projectId) ||
-          randomTask.parentId ||
+          randomTask.id === task.id ||
+          randomTask.projectId !== 0 ||
+          randomTask.parentId !== 0 ||
           randomTask.subTaskIds.length > 0
         )
           continue;
+
         randomTask = {
           ...randomTask,
           projectId: task.projectId,
@@ -92,9 +95,9 @@ function generateRelation() {
 }
 
 export default function () {
-  if (!Object.keys(projects)) generateProjects();
-  if (!Object.keys(tags)) generateTags();
-  if (!Object.keys(tasks)) {
+  if (!Object.keys(projects).length) generateProjects();
+  if (!Object.keys(tags).length) generateTags();
+  if (!Object.keys(tasks).length) {
     generateTasks();
     generateRelation();
   }

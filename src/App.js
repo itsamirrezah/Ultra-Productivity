@@ -6,7 +6,7 @@ import SideNav from "./components/side-nav/SideNav";
 import Tasks from "./components/pages/Tasks";
 function App() {
   return (
-    <HStack alignItems="stretch">
+    <HStack alignItems="stretch" overflow="hidden" spacing="0">
       {/* side nav section */}
       <SideNav />
       {/* tasks  section*/}
