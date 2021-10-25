@@ -15,8 +15,8 @@ export default function ({
     title: title ? title : "",
     isDone: isDone ? isDone : false,
     timeTracked: 0,
-    parentId: parentId ? parentId : 0,
-    projectId: projectId ? projectId : 0,
+    parentId: parentId ? parentId : null,
+    projectId: projectId ? projectId : null,
     subTaskIds: subTaskIds ? subTaskIds : [],
     tagIds: tagId ? [tagId] : [],
   };

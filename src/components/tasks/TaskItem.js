@@ -1,6 +1,7 @@
 //imports
 import { HStack, Flex, Box, Input, Icon } from "@chakra-ui/react";
 import { FaGripLines } from "react-icons/fa";
+import TagItems from "../tags/TagItems";
 
 function TaskItem({ task, subStyle }) {
   const { title, tags } = task;
@@ -19,6 +20,7 @@ function TaskItem({ task, subStyle }) {
           variant="unstyled"
         />
         {/* display tags if available */}
+        {tags && <TagItems items={tags} />}
       </Flex>
     </HStack>
   );

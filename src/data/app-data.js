@@ -29,7 +29,7 @@ function generateTags() {
 }
 
 function generateTasks() {
-  for (let i = 0; i < 30; i++) {
+  for (let i = 0; i < 100; i++) {
     const t = Task({
       title: `task-${i + 1}`,
     });
@@ -45,6 +45,10 @@ function generateRelation() {
 
   taskList.forEach((taskId) => {
     let task = { ...tasks[taskId] };
+
+    if (task.projectId || task.parentId) {
+      return;
+    }
     //randomly choose => have a projectId or not
     if (!Math.floor(Math.random() * 3)) {
       const projectIdx = Math.floor(Math.random() * projectList.length);
@@ -68,16 +72,17 @@ function generateRelation() {
     }
 
     //randomly choose => have subtasks or not
-    if (!Math.floor(Math.random() * 2)) {
+    if (!Math.floor(Math.random() * 3)) {
       for (let i = 0; i < 5; i++) {
         let randomTask =
           tasks[taskList[Math.floor(Math.random() * taskList.length)]];
 
         if (
           randomTask.id === task.id ||
-          randomTask.projectId !== 0 ||
-          randomTask.parentId !== 0 ||
-          randomTask.subTaskIds.length > 0
+          randomTask.projectId ||
+          randomTask.parentId ||
+          randomTask.subTaskIds.length > 0 ||
+          randomTask.tagIds.length > 0
         )
           continue;
 
@@ -86,6 +91,7 @@ function generateRelation() {
           projectId: task.projectId,
           parentId: task.id,
         };
+        tasks = { ...tasks, [randomTask.id]: randomTask };
         task = { ...task, subTaskIds: [...task.subTaskIds, randomTask.id] };
       }
     }
