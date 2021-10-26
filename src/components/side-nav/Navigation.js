@@ -3,8 +3,13 @@ import { VStack } from "@chakra-ui/react";
 import Logo from "../UI/Logo";
 //components
 import NavItems from "./NavItems";
+//data
+import navigationData from "../../data/nav-data";
 
-function Navigation({ items }) {
+function Navigation() {
+  console.log("re-rendering navigation");
+  const items = navigationData();
+
   return (
     <VStack
       width="full"

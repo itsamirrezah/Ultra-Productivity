@@ -2,13 +2,8 @@
 import { Flex } from "@chakra-ui/react";
 //components
 import Navigation from "./Navigation";
-//data
-import navigationData from "../../data/nav-data";
 
 function SideNav() {
-  // load navigation data with dummy
-  const navData = navigationData();
-
   return (
     <Flex
       as="side"
@@ -19,7 +14,7 @@ function SideNav() {
       display={["none", "none", "inherit"]}
       borderRightColor="color.gray"
     >
-      <Navigation items={navData} />
+      <Navigation />
     </Flex>
   );
 }
