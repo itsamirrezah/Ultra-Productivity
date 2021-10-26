@@ -1,5 +1,6 @@
 //imports
 import { Accordion, AccordionPanel } from "@chakra-ui/react";
+import CreateNewButton from "../UI/CreateNewButton";
 import AccordionItem from "./AccordionItem";
 //components
 import AccordionSection from "./AccordionSection";
@@ -9,7 +10,11 @@ function AccordionItems({ items }) {
     <Accordion allowMultiple borderColor="transparent" w="full">
       {items.map((it) => {
         return (
-          <AccordionSection key={it.text} text={it.text} icon={<it.icon />}>
+          <AccordionSection
+            key={it.text}
+            text={`${it.text}s`}
+            icon={<it.icon />}
+          >
             <AccordionPanel p="0" bgColor="rgba(255,255,255,0.03)">
               {Object.keys(it.list).map((id, idx) => {
                 const item = it.list[id];
@@ -23,6 +28,7 @@ function AccordionItems({ items }) {
                   />
                 );
               })}
+              <CreateNewButton data={it} />
             </AccordionPanel>
           </AccordionSection>
         );

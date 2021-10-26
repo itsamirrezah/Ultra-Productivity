@@ -6,7 +6,13 @@ import Task from "../model/Task";
 let projects = {};
 let tags = {};
 let tasks = {};
-const colors = { 0: "red", 1: "yellow", 2: "blue" };
+export const colors = {
+  0: "red",
+  1: "yellow",
+  2: "blue",
+  3: "pink",
+  4: "cyan",
+};
 
 function generateProjects() {
   for (let i = 0; i < 5; i++) {

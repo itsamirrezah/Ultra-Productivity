@@ -1,5 +1,5 @@
 // imports
-import { FaListUl, FaSun, FaHashtag } from "react-icons/fa";
+import { FaListUl, FaSun, FaHashtag, FaPlus } from "react-icons/fa";
 import appData from "../data/app-data";
 const { tags: tagList, projects: projectList } = appData();
 
@@ -11,23 +11,25 @@ export default function (projects, tags) {
       items: [
         //projects
         {
-          text: "Projects",
+          text: "Project",
           icon: FaListUl,
           route: "/projects",
           list: projects ? projects : projectList,
           button: {
-            text: "create new projects",
+            text: "new project",
+            icon: FaPlus,
           },
           actions: {},
         },
         //tags
         {
-          text: "Tags",
+          text: "Tag",
           icon: FaHashtag,
           route: "/tags",
           list: tags ? tags : tagList,
           button: {
-            text: "create new tags",
+            text: "new tag",
+            icon: FaPlus,
           },
           actions: {},
         },
