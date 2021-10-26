@@ -18,6 +18,7 @@ function NavItems({ items }) {
                 <ChakraLink
                   as={Link}
                   style={{ textDecoration: "none" }}
+                  to={item.link}
                   w="full"
                 >
                   <BasicItem text={item.text} icon={<item.icon />} />

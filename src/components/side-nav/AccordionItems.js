@@ -13,6 +13,7 @@ function AccordionItems({ items }) {
             <AccordionPanel p="0" bgColor="rgba(255,255,255,0.03)">
               {Object.keys(it.list).map((id, idx) => {
                 const item = it.list[id];
+                if (item.type < 0) return;
                 return (
                   <AccordionItem
                     key={idx}

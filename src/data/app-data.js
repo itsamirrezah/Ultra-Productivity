@@ -19,6 +19,10 @@ function generateProjects() {
 }
 
 function generateTags() {
+  tags = {
+    ...tags,
+    ["today"]: Tag({ id: "today", title: "Today", color: "green", type: -1 }),
+  };
   for (let i = 0; i < 5; i++) {
     const t = Tag({
       title: `tag-${i + 1}`,

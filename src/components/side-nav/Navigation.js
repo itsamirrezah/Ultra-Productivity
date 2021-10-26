@@ -7,7 +7,6 @@ import NavItems from "./NavItems";
 import navigationData from "../../data/nav-data";
 
 function Navigation() {
-  console.log("re-rendering navigation");
   const items = navigationData();
 
   return (
