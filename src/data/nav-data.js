@@ -7,6 +7,7 @@ export default function (projects, tags) {
   return [
     { id: "today", icon: FaSun, text: "Today", type: 0, link: "/tags/today" },
     {
+      id: "accordion",
       type: 1,
       items: [
         //projects

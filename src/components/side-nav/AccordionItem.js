@@ -1,6 +1,14 @@
 import { Link as ChakraLink, HStack, Heading } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-function AccordionItem({ title, link, color }) {
+function AccordionItem({ title, link, color, isSelected }) {
+  const activeStyle = {
+    bg: "rgba(255, 255, 255, 0.1)",
+    borderLeftWidth: "7px",
+    borderLeftStyle: "solid",
+    borderLeftColor: color,
+  };
+  const selectedStyle = isSelected ? activeStyle : null;
+
   return (
     <ChakraLink
       as={Link}
@@ -8,7 +16,6 @@ function AccordionItem({ title, link, color }) {
       display="inline-block"
       style={{ textDecoration: "none" }}
       my="1"
-      borderLeft="3px solid transparent"
       width="full"
     >
       <HStack
@@ -16,12 +23,9 @@ function AccordionItem({ title, link, color }) {
         justifyContent="space-between"
         borderLeftRadius="lg"
         pl="8"
-        _hover={{
-          bgColor: "rgba(255,255,255,0.1)",
-          borderLeftWidth: "7px",
-          borderLeftStyle: "solid",
-          borderLeftColor: color,
-        }}
+        borderLeft="3px solid transparent"
+        _hover={activeStyle}
+        {...selectedStyle}
       >
         <Heading
           overflow="hidden"

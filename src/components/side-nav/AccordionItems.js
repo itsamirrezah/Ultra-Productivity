@@ -5,7 +5,7 @@ import AccordionItem from "./AccordionItem";
 //components
 import AccordionSection from "./AccordionSection";
 
-function AccordionItems({ items }) {
+function AccordionItems({ items, location }) {
   return (
     <Accordion allowMultiple borderColor="transparent" w="full">
       {items.map((it) => {
@@ -16,15 +16,16 @@ function AccordionItems({ items }) {
             icon={<it.icon />}
           >
             <AccordionPanel p="0" bgColor="rgba(255,255,255,0.03)">
-              {Object.keys(it.list).map((id, idx) => {
+              {Object.keys(it.list).map((id) => {
                 const item = it.list[id];
                 if (item.type < 0) return;
                 return (
                   <AccordionItem
-                    key={idx}
+                    key={id}
                     title={item.title}
                     color={item.color}
                     link={`${it.route}/${item.id}`}
+                    isSelected={location === `${it.route}/${item.id}`}
                   />
                 );
               })}

@@ -6,7 +6,6 @@ import Navigation from "./Navigation";
 function SideNav() {
   return (
     <Flex
-      as="side"
       width="full"
       maxWidth={56}
       flexShrink={0}

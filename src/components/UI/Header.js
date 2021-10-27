@@ -10,7 +10,7 @@ function Header() {
       <HStack w="full" justifyContent="space-between">
         <HStack spacing="0">
           <IconButton
-            size="md"
+            // size="md"
             variant="link"
             display={["inherit", "inherit", "none"]}
             icon={<BsListNested />}

@@ -66,7 +66,12 @@ function TaskItem({ task, subStyle }) {
 
       <HStack spacing="4" px="4" opacity={isDone ? 0.3 : 1}>
         <Box ms="2">
-          <Icon as={FaGripLines} fill="grey" cursor="grab" size="xs" />
+          <Icon
+            as={FaGripLines}
+            fill="grey"
+            cursor="grab"
+            //  size="xs"
+          />
         </Box>
         <Flex w="full" flexDir="column">
           <Input

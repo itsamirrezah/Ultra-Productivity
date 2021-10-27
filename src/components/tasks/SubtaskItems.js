@@ -32,6 +32,7 @@ function SubtaskItems({ items }) {
         items.map((subtask) => {
           const taskItem = (
             <TaskItem
+              key={subtask.id}
               task={subtask}
               subStyle={{
                 alignSelf: "flex-end",
