@@ -2,12 +2,14 @@
 import { useLocation } from "react-router-dom";
 import { VStack, Box } from "@chakra-ui/react";
 //data
-import appData from "../../data/app-data";
+// import appData from "../../data/app-data";
 import TaskItems from "../tasks/TaskItems";
 import Header from "../UI/Header";
+import useTasks from "../../store/tasks-context";
 
 function Tasks() {
-  const data = appData();
+  // const data = appData();
+  const { state: data } = useTasks();
   const [_, filter, id] = useLocation().pathname.split("/");
   const filteredTasks = data[filter][id].taskIds.map((tId) => {
     const task = data.tasks[tId];

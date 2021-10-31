@@ -4,10 +4,12 @@ import Logo from "../UI/Logo";
 //components
 import NavItems from "./NavItems";
 //data
+import useTasks from "../../store/tasks-context";
 import navigationData from "../../data/nav-data";
 
 function Navigation() {
-  const items = navigationData();
+  const navData = useTasks();
+  const items = navigationData(navData);
 
   return (
     <VStack

@@ -3,7 +3,7 @@ import { FaListUl, FaSun, FaHashtag, FaPlus } from "react-icons/fa";
 import appData from "../data/app-data";
 const { tags: tagList, projects: projectList } = appData();
 
-export default function (projects, tags) {
+export default function ({ projects, tags }) {
   return [
     { id: "today", icon: FaSun, text: "Today", type: 0, link: "/tags/today" },
     {
