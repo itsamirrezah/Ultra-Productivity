@@ -10,11 +10,13 @@ import {
   FaTag,
   FaWindowClose,
 } from "react-icons/fa";
+import useActiveTask from "../../store/useActiveTask";
 //components
 import TagItems from "../tags/TagItems";
 
 function TaskItem({ task, subStyle }) {
   const { title, isDone, tags, parentId } = task;
+  const { activeTask, play, pause } = useActiveTask({ task: task });
   return (
     <Box
       w="full"
@@ -48,8 +50,18 @@ function TaskItem({ task, subStyle }) {
       >
         {!isDone && (
           <>
-            <IconButton icon={<FaPlay />} fill="white" variant="ghost" />
-            <IconButton icon={<FaPause />} fill="white" variant="ghost" />
+            <IconButton
+              icon={<FaPlay />}
+              fill="white"
+              variant="ghost"
+              onClick={play}
+            />
+            <IconButton
+              icon={<FaPause />}
+              fill="white"
+              variant="ghost"
+              onClick={pause}
+            />
           </>
         )}
         {!isDone && (

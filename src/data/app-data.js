@@ -2,10 +2,13 @@
 import Project from "../model/Project";
 import Tag from "../model/Tag";
 import Task from "../model/Task";
+import ActiveTask from "../model/ActiveTask";
 
 let projects = {};
 let tags = {};
 let tasks = {};
+let activeTask = {};
+
 export const colors = {
   0: "red",
   1: "yellow",
@@ -111,6 +114,13 @@ function generateRelation() {
   });
 }
 
+function generateActiveTask() {
+  const taskList = Object.keys(tasks);
+  const randomIdx = Math.floor(Math.random() * taskList.length);
+  const randomTask = tasks[taskList[randomIdx]];
+  activeTask = ActiveTask({ ...randomTask });
+}
+
 export default function () {
   if (!Object.keys(projects).length) generateProjects();
   if (!Object.keys(tags).length) generateTags();
@@ -118,6 +128,7 @@ export default function () {
     generateTasks();
     generateRelation();
   }
+  generateActiveTask();
 
-  return { tasks, projects, tags };
+  return { tasks, projects, tags, activeTask };
 }

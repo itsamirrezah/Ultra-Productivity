@@ -1,9 +1,20 @@
-import { HStack, IconButton, Heading, useDisclosure } from "@chakra-ui/react";
+//imports
+import {
+  HStack,
+  IconButton,
+  Heading,
+  useDisclosure,
+  Text,
+} from "@chakra-ui/react";
 import { BsListNested } from "react-icons/bs";
 import { FaPlus, FaSearch } from "react-icons/fa";
+//components
 import NavDrawer from "../side-nav/NavDrawer";
+//data
+import useActiveTask from "../../store/useActiveTask";
 
 function Header() {
+  const { activeTask } = useActiveTask({ shouldObserve: true });
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
@@ -22,6 +33,7 @@ function Header() {
         <HStack>
           <IconButton icon={<FaPlus />} variant="ghost" />
           <IconButton icon={<FaSearch />} variant="ghost" />
+          <Text>{activeTask.title}</Text>
         </HStack>
       </HStack>
 
