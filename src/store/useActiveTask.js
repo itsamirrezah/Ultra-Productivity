@@ -9,10 +9,16 @@ localStorage.setItem("ACTIVE_TASK", JSON.stringify(dummyActiveTask));
 
 //global states
 let activeTask = ActiveTask({});
+let liveObservers = {};
 let observers = {};
 let isTrackStarted = false;
 let interval = null;
 
+function unsetActiveTask() {
+  activeTask = ActiveTask({});
+  localStorage.removeItem("ACTIVE_TASK");
+  renderObservers(activeTask);
+}
 function setActiveTask(task) {
   activeTask = ActiveTask(task);
   localStorage.setItem("ACTIVE_TASK", JSON.stringify(activeTask));
@@ -21,7 +27,7 @@ function setActiveTask(task) {
 
 //re-render observers
 function renderObservers(state) {
-  Object.keys(observers).forEach((id) => observers[id](state));
+  Object.keys(liveObservers).forEach((id) => liveObservers[id](state));
 }
 
 export default function useActiveTask({
@@ -32,21 +38,22 @@ export default function useActiveTask({
   const newObserver = useState()[1];
 
   function subscribe(id) {
-    observers = { ...observers, [id]: newObserver };
+    liveObservers = { ...liveObservers, [id]: observers[id] };
   }
 
   function unsubscribe(id) {
-    const { [id]: _, ...remain } = observers;
-    observers = remain;
+    const { [id]: _, ...remain } = liveObservers;
+    liveObservers = remain;
   }
 
   function cleanup() {
     unsubscribe(activeTask.id);
     clearInterval(interval);
+    interval = null;
     isTrackStarted = false;
   }
 
-  function play() {
+  function play(task) {
     if (activeTask.id) {
       cleanup();
     }
@@ -56,7 +63,7 @@ export default function useActiveTask({
 
   function pause() {
     cleanup();
-    setActiveTask(ActiveTask({}));
+    unsetActiveTask();
   }
 
   function startTracking() {
@@ -66,7 +73,8 @@ export default function useActiveTask({
         ...activeTask,
         timeTracked: activeTask.timeTracked + 10000,
       });
-    }, 10000);
+    }, 1000);
+    return () => clearInterval(interval);
   }
 
   useEffect(() => {
@@ -81,14 +89,15 @@ export default function useActiveTask({
 
   //subscription
   useEffect(() => {
+    observers = { ...observers, [task ? task.id : "default"]: newObserver };
     if (shouldObserve || task.id === activeTask.id)
-      observers = {
-        ...observers,
+      liveObservers = {
+        ...liveObservers,
         [task ? task.id : "default"]: newObserver,
       };
     return () => {
-      const { [task ? task.id : "default"]: _, ...remain } = observers;
-      observers = remain;
+      const { [task ? task.id : "default"]: _, ...remain } = liveObservers;
+      liveObservers = remain;
     };
   }, []);
 
