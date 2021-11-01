@@ -14,9 +14,15 @@ import NavDrawer from "../side-nav/NavDrawer";
 //data
 import useActiveTask from "../../store/useActiveTask";
 
-function Header() {
+function Header({ availableTask, title }) {
   const { activeTask, play, pause } = useActiveTask({ shouldObserve: true });
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  function startTracking() {
+    const task = availableTask();
+    if (task) play(task);
+  }
+
   return (
     <>
       <HStack
@@ -36,7 +42,7 @@ function Header() {
             icon={<BsListNested />}
             onClick={onOpen}
           />
-          <Heading fontSize="xx-large">{`Overview`}</Heading>
+          <Heading fontSize="xx-large">{title}</Heading>
         </HStack>
 
         <HStack>
@@ -71,7 +77,7 @@ function Header() {
               </Box>
             )}
             <IconButton
-              onClick={activeTask.id ? pause : play}
+              onClick={activeTask.id ? pause : startTracking}
               borderRadius="full"
               variant="outline"
               bgColor={!activeTask.id ? "blue.800" : "red.800"}

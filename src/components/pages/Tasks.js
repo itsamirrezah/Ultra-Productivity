@@ -11,12 +11,26 @@ function Tasks() {
   // const data = appData();
   const { state: data } = useTasks();
   const [_, filter, id] = useLocation().pathname.split("/");
-  const filteredTasks = data[filter][id].taskIds.map((tId) => {
+  const section = data[filter][id];
+  const filteredTasks = section.taskIds.map((tId) => {
     const task = data.tasks[tId];
     task.subtasks = task.subTaskIds.map((sId) => data.tasks[sId]);
     task.tags = task.tagIds.map((tagId) => data.tags[tagId]);
     return task;
   });
+
+  function getAvailableTask() {
+    for (let i = 0; i < filteredTasks.length; i++) {
+      const task = filteredTasks[i];
+      if (task.isDone) continue;
+      for (let j = 0; j < task.subtasks.length; j++) {
+        const subtask = task.subtasks[j];
+        if (subtask.isDone) continue;
+        return subtask;
+      }
+      return task;
+    }
+  }
 
   return (
     <VStack
@@ -28,7 +42,7 @@ function Tasks() {
       px={["2", "4", "8"]}
     >
       {/* header */}
-      <Header />
+      <Header availableTask={getAvailableTask} title={section.title} />
       <VStack w="full" spacing="0">
         {/* working status */}
         <Box>Working: 2h 3m</Box>

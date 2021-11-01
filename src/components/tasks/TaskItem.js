@@ -54,7 +54,7 @@ function TaskItem({ task, subStyle }) {
               icon={<FaPlay />}
               fill="white"
               variant="ghost"
-              onClick={play}
+              onClick={play.bind(null, task)}
             />
             <IconButton
               icon={<FaPause />}
