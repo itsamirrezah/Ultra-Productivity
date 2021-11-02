@@ -34,11 +34,10 @@ function SubtaskItems({ items }) {
             <TaskItem
               key={subtask.id}
               task={subtask}
-              subStyle={{
+              props={{
                 alignSelf: "flex-end",
-                bgColor: "rgba(255,255,255,0.1)",
+                bgColor: "whiteAlpha.200",
                 py: "1",
-                rounded: "md",
               }}
             />
           );

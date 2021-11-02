@@ -13,12 +13,11 @@ function TaskItems({ tasks }) {
             key={task.id}
             w="full"
             rounded="lg"
-            py="2"
             spacing="0.5"
-            bgColor="rgba(0,0,0,0.5)"
+            bgColor="blackAlpha.600"
             maxW="4xl"
           >
-            <TaskItem task={task} />
+            <TaskItem task={task} props={{ py: "2" }} />
             {task.subtasks.length > 0 && <SubtaskItems items={task.subtasks} />}
           </VStack>
         );

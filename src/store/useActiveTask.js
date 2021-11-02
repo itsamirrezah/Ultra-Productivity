@@ -46,11 +46,17 @@ export default function useActiveTask({
     liveObservers = remain;
   }
 
-  function cleanup() {
-    unsubscribe(activeTask.id);
+  function unsetVariables() {
     clearInterval(interval);
     interval = null;
     isTrackStarted = false;
+  }
+
+  function cleanup() {
+    const tempActiveTask = activeTask.id;
+    unsetVariables();
+    unsetActiveTask();
+    unsubscribe(tempActiveTask);
   }
 
   function play(task) {
@@ -63,7 +69,6 @@ export default function useActiveTask({
 
   function pause() {
     cleanup();
-    unsetActiveTask();
   }
 
   function startTracking() {
@@ -73,7 +78,7 @@ export default function useActiveTask({
         ...activeTask,
         timeTracked: activeTask.timeTracked + 10000,
       });
-    }, 1000);
+    }, 2000);
     return () => clearInterval(interval);
   }
 
