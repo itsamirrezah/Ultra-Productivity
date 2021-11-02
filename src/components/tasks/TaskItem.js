@@ -1,4 +1,5 @@
 //imports
+import React from "react";
 import { HStack, Flex, Box, Input, Icon, IconButton } from "@chakra-ui/react";
 import { FaGripLines } from "react-icons/fa";
 import {
@@ -10,14 +11,38 @@ import {
   FaTag,
   FaWindowClose,
 } from "react-icons/fa";
-import useActiveTask from "../../store/useActiveTask";
 //components
 import TagItems from "../tags/TagItems";
+//data
+import { useDispatch } from "../../store/tasks-context";
+import useActiveTask from "../../store/useActiveTask";
+// actions
+import {
+  setTaskDone,
+  addSubtask,
+  removeTask,
+  removeSubtask,
+} from "../../store/actions";
 
 function TaskItem({ task, props }) {
-  const { title, isDone, tags, parentId } = task;
+  const { id, title, isDone, tags, parentId } = task;
+  const dispatch = useDispatch();
   const { activeTask, play, pause } = useActiveTask({ task: task });
   const isActive = activeTask.id === task.id;
+
+  function setDoneHandler() {
+    if (isActive) pause();
+    dispatch(setTaskDone({ id, isDone: !isDone }));
+  }
+
+  function addSubtaskHandler() {
+    dispatch(addSubtask({ parentId: id }));
+  }
+
+  function removeTaskHandler() {
+    if (!parentId) dispatch(removeTask({ id }));
+    else dispatch(removeSubtask({ id, parentId }));
+  }
 
   return (
     <Box
@@ -39,6 +64,7 @@ function TaskItem({ task, props }) {
           transform="translate(-50%,-50%)"
           variant="ghost"
           icon={<FaUndo />}
+          onClick={setDoneHandler}
         />
       )}
       <Box
@@ -71,10 +97,26 @@ function TaskItem({ task, props }) {
           />
         )}
 
-        {!isDone && <IconButton icon={<FaCheck />} variant="ghost" />}
-        {!parentId && <IconButton icon={<FaPlusSquare />} variant="ghost" />}
+        {!isDone && (
+          <IconButton
+            icon={<FaCheck />}
+            variant="ghost"
+            onClick={setDoneHandler}
+          />
+        )}
+        {!parentId && (
+          <IconButton
+            icon={<FaPlusSquare />}
+            variant="ghost"
+            onClick={addSubtaskHandler}
+          />
+        )}
         {!parentId && <IconButton icon={<FaTag />} variant="ghost" />}
-        <IconButton icon={<FaWindowClose />} variant="ghost" />
+        <IconButton
+          icon={<FaWindowClose />}
+          variant="ghost"
+          onClick={removeTaskHandler}
+        />
       </Flex>
 
       <HStack spacing="4" px="4" opacity={isDone ? 0.3 : 1}>
@@ -108,4 +150,17 @@ function TaskItem({ task, props }) {
   );
 }
 
-export default TaskItem;
+function shouldNotRender(pProp, nProp) {
+  const { task: pTask } = pProp;
+  const { task: nTask } = nProp;
+
+  return (
+    pTask.isDone === nTask.isDone &&
+    pTask.title === pTask.title &&
+    pTask.subTaskIds.length === nTask.subTaskIds.length &&
+    pTask.timeTracked === nTask.timeTracked &&
+    pTask.tagIds.length === nTask.tagIds.length
+  );
+}
+
+export default React.memo(TaskItem, shouldNotRender);

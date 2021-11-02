@@ -6,17 +6,25 @@ const { projects, tags, tasks } = appData();
 const defaultTasks = { projects, tags, tasks };
 // const defaultTasks = {};
 const TasksContext = createContext(defaultTasks);
-
-function reducer() {}
+const DispatchContext = createContext();
+// reducer
+import reducer from "./task-reducer";
 
 export function TasksProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, defaultTasks);
 
   return (
-    <TasksContext.Provider value={{ state, dispatch }}>
-      {children}
-    </TasksContext.Provider>
+    <DispatchContext.Provider value={dispatch}>
+      <TasksContext.Provider value={{ state }}>
+        {children}
+      </TasksContext.Provider>
+    </DispatchContext.Provider>
   );
+}
+
+export function useDispatch() {
+  const ctx = useContext(DispatchContext);
+  return ctx;
 }
 
 export default function useTasks() {

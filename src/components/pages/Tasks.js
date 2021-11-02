@@ -7,7 +7,9 @@ import Header from "../UI/Header";
 import NavDrawer from "../side-nav/NavDrawer";
 import CreateNewModal from "../UI/CreateNewModal";
 //data
-import useTasks from "../../store/tasks-context";
+import useTasks, { useDispatch } from "../../store/tasks-context";
+//actions
+import { addTask } from "../../store/actions";
 // import appData from "../../data/app-data";
 
 function Tasks() {
@@ -25,6 +27,7 @@ function Tasks() {
   } = useDisclosure();
 
   const { state: data } = useTasks();
+  const dispatch = useDispatch();
   const [_, filter, id] = useLocation().pathname.split("/");
   const section = data[filter][id];
   const filteredTasks = section.taskIds.map((tId) => {
@@ -51,6 +54,14 @@ function Tasks() {
     console.log("dispatch state with ", payload);
   }
 
+  function onAddTaskHandler() {
+    const action = addTask({
+      projectId: section._ === "Project" ? id : null,
+      tagId: section._ === "Tag" ? id : null,
+    });
+    dispatch(action);
+  }
+
   return (
     <>
       <VStack
@@ -68,6 +79,7 @@ function Tasks() {
           onOpenNav={onOpenNav}
           onOpenModal={onOpenModal}
           isEditable={section.id !== "today"}
+          onAddTaskHandler={onAddTaskHandler}
         />
         <VStack w="full" spacing="0">
           {/* working status */}

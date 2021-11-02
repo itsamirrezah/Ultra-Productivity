@@ -1,18 +1,19 @@
 //imports
-import {
-  HStack,
-  Box,
-  IconButton,
-  Heading,
-  useDisclosure,
-  Text,
-} from "@chakra-ui/react";
+import { HStack, Box, IconButton, Heading, Text } from "@chakra-ui/react";
 import { BsListNested } from "react-icons/bs";
 import { FaPause, FaPlay, FaPlus, FaSearch, FaEllipsisV } from "react-icons/fa";
 //data
 import useActiveTask from "../../store/useActiveTask";
+//action
 
-function Header({ availableTask, title, onOpenNav, onOpenModal, isEditable }) {
+function Header({
+  availableTask,
+  title,
+  onOpenNav,
+  onOpenModal,
+  isEditable,
+  onAddTaskHandler,
+}) {
   const { activeTask, play, pause } = useActiveTask({ shouldObserve: true });
 
   function startTracking() {
@@ -54,7 +55,11 @@ function Header({ availableTask, title, onOpenNav, onOpenModal, isEditable }) {
         </HStack>
 
         <HStack>
-          <IconButton icon={<FaPlus />} variant="ghost" />
+          <IconButton
+            icon={<FaPlus />}
+            variant="ghost"
+            onClick={onAddTaskHandler}
+          />
           <IconButton icon={<FaSearch />} variant="ghost" />
           <Box pos="relative">
             {activeTask.id && (
