@@ -8,15 +8,12 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { BsListNested } from "react-icons/bs";
-import { FaPause, FaPlay, FaPlus, FaSearch } from "react-icons/fa";
-//components
-import NavDrawer from "../side-nav/NavDrawer";
+import { FaPause, FaPlay, FaPlus, FaSearch, FaEllipsisV } from "react-icons/fa";
 //data
 import useActiveTask from "../../store/useActiveTask";
 
-function Header({ availableTask, title }) {
+function Header({ availableTask, title, onOpenNav, onOpenModal, isEditable }) {
   const { activeTask, play, pause } = useActiveTask({ shouldObserve: true });
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   function startTracking() {
     const task = availableTask();
@@ -32,17 +29,28 @@ function Header({ availableTask, title }) {
           "&:hover .active-task-box": {
             visibility: "hidden",
           },
+          "&:hover .edit-icon": {
+            visibility: "visible",
+          },
         }}
       >
-        <HStack spacing="0">
+        <HStack spacing="0" alignItems="baseline">
           <IconButton
-            // size="md"
             variant="link"
             display={["inherit", "inherit", "none"]}
             icon={<BsListNested />}
-            onClick={onOpen}
+            onClick={onOpenNav}
           />
           <Heading fontSize="xx-large">{title}</Heading>
+          {isEditable && (
+            <IconButton
+              visibility="hidden"
+              className="edit-icon"
+              variant="link"
+              icon={<FaEllipsisV />}
+              onClick={onOpenModal}
+            />
+          )}
         </HStack>
 
         <HStack>
@@ -86,8 +94,6 @@ function Header({ availableTask, title }) {
           </Box>
         </HStack>
       </HStack>
-
-      <NavDrawer isOpen={isOpen} onClose={onClose} />
     </>
   );
 }

@@ -4,6 +4,7 @@ import { Route } from "react-router-dom";
 //components
 import SideNav from "./components/side-nav/SideNav";
 import Tasks from "./components/pages/Tasks";
+
 function App() {
   return (
     <HStack alignItems="stretch" overflow="hidden" spacing="0">

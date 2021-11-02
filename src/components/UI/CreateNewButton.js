@@ -4,6 +4,10 @@ import CreateNewModal from "./CreateNewModal";
 function CreateNewButton({ data }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  function onCreateNewSection(payload) {
+    console.log("dispatch state with ", payload);
+  }
+
   return (
     <>
       <Button
@@ -15,7 +19,13 @@ function CreateNewButton({ data }) {
       >
         {data.button.text}
       </Button>
-      <CreateNewModal isOpen={isOpen} onClose={onClose} entity={data.text} />
+      <CreateNewModal
+        header={`Create New ${data.text}`}
+        isOpen={isOpen}
+        onClose={onClose}
+        type={data.text}
+        onSubmit={onCreateNewSection}
+      />
     </>
   );
 }

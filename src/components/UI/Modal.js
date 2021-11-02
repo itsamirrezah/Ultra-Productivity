@@ -8,16 +8,24 @@ import {
   Button,
 } from "@chakra-ui/react";
 
-function Modal({ isOpen, onClose, title, children }) {
+function Modal({
+  isOpen,
+  onClose,
+  title,
+  size,
+  submitCaption,
+  onSubmit,
+  children,
+}) {
   return (
-    <ChakraModel isOpen={isOpen} onClose={onClose}>
+    <ChakraModel isOpen={isOpen} onClose={onClose} size={size}>
       <ModalOverlay />
       <ModalContent bgColor="#453643" px="4">
         <ModalHeader>{title}</ModalHeader>
         <ModalCloseButton />
         {children}
         <ModalFooter>
-          <Button>Save</Button>
+          <Button onClick={onSubmit}>{submitCaption}</Button>
         </ModalFooter>
       </ModalContent>
     </ChakraModel>

@@ -7,5 +7,6 @@ export default function ({ id, title, color, type }) {
     color: !color ? "yellow" : color,
     taskIds: [],
     type: !type ? 0 : type,
+    _: "Tag",
   };
 }
