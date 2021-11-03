@@ -26,8 +26,7 @@ import {
 
 function TaskItem({ task, props }) {
   const { id, title, isDone, tags, parentId } = task;
-  const dispatch = useDispatch();
-  const { activeTask, play, pause } = useActiveTask({ task: task });
+  const { activeTask, play, pause, dispatch } = useActiveTask({ task: task });
   const isActive = activeTask.id === task.id;
 
   function setDoneHandler() {

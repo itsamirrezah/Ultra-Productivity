@@ -3,6 +3,7 @@ export const TASK_ADD = "TASK_ADD";
 export const SUBTASK_ADD = "SUBTASK_ADD";
 export const TASK_REMOVE = "TASK_REMOVE";
 export const SUBTASK_REMOVE = "SUBTASK_REMOVE";
+export const TASK_TRACKED = "TASK_TRACKED";
 
 export function setTaskDone({ id, isDone }) {
   return { type: TASK_DONE, payload: { id, isDone } };
@@ -22,4 +23,8 @@ export function removeTask({ id }) {
 
 export function removeSubtask({ id, parentId }) {
   return { type: SUBTASK_REMOVE, payload: { id, parentId } };
+}
+
+export function setTaskTracked({ id, timeTracked }) {
+  return { type: TASK_TRACKED, payload: { id, timeTracked } };
 }

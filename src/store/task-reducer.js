@@ -5,6 +5,7 @@ import {
   SUBTASK_ADD,
   TASK_REMOVE,
   SUBTASK_REMOVE,
+  TASK_TRACKED,
 } from "./actions";
 //model
 import Task from "../model/Task";
@@ -15,7 +16,6 @@ export default function reducer(state, action) {
   const tags = state.tags;
   const tasks = state.tasks;
 
-  console.log(state);
   if (action.type === TASK_DONE) {
     const { id, isDone } = action.payload;
     return {
@@ -63,8 +63,6 @@ export default function reducer(state, action) {
     const { parentId } = action.payload;
     const subtask = Task({ parentId });
 
-    console.log(parentId);
-    console.log(tasks[parentId]);
     return {
       ...state,
       tasks: {
@@ -120,7 +118,6 @@ export default function reducer(state, action) {
   }
 
   if (action.type === SUBTASK_REMOVE) {
-    console.log("what?");
     const { id, parentId } = action.payload;
     let updatedTasks = removeItem(tasks, id);
     return {
@@ -137,5 +134,19 @@ export default function reducer(state, action) {
     };
   }
 
+  if (action.type === TASK_TRACKED) {
+    const { id, timeTracked } = action.payload;
+
+    return {
+      ...state,
+      tasks: {
+        ...tasks,
+        [id]: {
+          ...tasks[id],
+          timeTracked: timeTracked,
+        },
+      },
+    };
+  }
   return state;
 }

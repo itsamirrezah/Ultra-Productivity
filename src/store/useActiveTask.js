@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import ActiveTask from "../model/ActiveTask";
-
+import { setTaskTracked } from "../store/actions";
 //load active task from dummy
 import appData from "../data/app-data";
+import { useDispatch } from "./tasks-context";
 const { activeTask: dummyActiveTask } = appData();
 localStorage.clear();
 localStorage.setItem("ACTIVE_TASK", JSON.stringify(dummyActiveTask));
@@ -30,12 +31,10 @@ function renderObservers(state) {
   Object.keys(liveObservers).forEach((id) => liveObservers[id](state));
 }
 
-export default function useActiveTask({
-  dispatchTask = {},
-  shouldObserve = false,
-  task = null,
-}) {
+export default function useActiveTask({ shouldObserve = false, task = null }) {
   const newObserver = useState()[1];
+
+  const dispatch = useDispatch();
 
   function subscribe(id) {
     liveObservers = { ...liveObservers, [id]: observers[id] };
@@ -52,23 +51,23 @@ export default function useActiveTask({
     isTrackStarted = false;
   }
 
-  function cleanup() {
-    const tempActiveTask = activeTask.id;
+  function cleanup(active) {
     unsetVariables();
     unsetActiveTask();
-    unsubscribe(tempActiveTask);
+    unsubscribe(active.id);
+    dispatch(setTaskTracked({ ...active }));
   }
 
   function play(task) {
     if (activeTask.id) {
-      cleanup();
+      cleanup(activeTask);
     }
     subscribe(task.id);
     setActiveTask(task);
   }
 
   function pause() {
-    cleanup();
+    cleanup(activeTask);
   }
 
   function startTracking() {
@@ -76,7 +75,7 @@ export default function useActiveTask({
     interval = setInterval(() => {
       setActiveTask({
         ...activeTask,
-        timeTracked: activeTask.timeTracked + 10000,
+        timeTracked: activeTask.timeTracked + 2000,
       });
     }, 2000);
     return () => clearInterval(interval);
@@ -106,5 +105,5 @@ export default function useActiveTask({
     };
   }, []);
 
-  return { activeTask, play, pause };
+  return { activeTask, play, pause, dispatch };
 }
