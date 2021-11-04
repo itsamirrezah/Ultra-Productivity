@@ -69,7 +69,6 @@ function generateRelation() {
       let project = projects[projectList[projectIdx]];
       project = {
         ...project,
-        projectId: project.id,
         taskIds: [...project.taskIds, task.id],
       };
       task = { ...task, projectId: project.id };

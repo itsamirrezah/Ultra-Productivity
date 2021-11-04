@@ -1,5 +1,7 @@
 // imports
 import { FaListUl, FaSun, FaHashtag, FaPlus } from "react-icons/fa";
+//actions
+import { addProject, addTag } from "../store/actions";
 import appData from "../data/app-data";
 const { tags: tagList, projects: projectList } = appData();
 
@@ -19,8 +21,8 @@ export default function ({ projects, tags }) {
           button: {
             text: "new project",
             icon: FaPlus,
+            action: addProject,
           },
-          actions: {},
         },
         //tags
         {
@@ -31,8 +33,8 @@ export default function ({ projects, tags }) {
           button: {
             text: "new tag",
             icon: FaPlus,
+            action: addTag,
           },
-          actions: {},
         },
       ],
     },

@@ -1,5 +1,4 @@
 //imports
-import React from "react";
 import { HStack, Flex, Box, Input, Icon, IconButton } from "@chakra-ui/react";
 import { FaGripLines } from "react-icons/fa";
 import {
@@ -14,7 +13,6 @@ import {
 //components
 import TagItems from "../tags/TagItems";
 //data
-import { useDispatch } from "../../store/tasks-context";
 import useActiveTask from "../../store/useActiveTask";
 // actions
 import {
@@ -149,17 +147,4 @@ function TaskItem({ task, props }) {
   );
 }
 
-function shouldNotRender(pProp, nProp) {
-  const { task: pTask } = pProp;
-  const { task: nTask } = nProp;
-
-  return (
-    pTask.isDone === nTask.isDone &&
-    pTask.title === pTask.title &&
-    pTask.subTaskIds.length === nTask.subTaskIds.length &&
-    pTask.timeTracked === nTask.timeTracked &&
-    pTask.tagIds.length === nTask.tagIds.length
-  );
-}
-
-export default React.memo(TaskItem, shouldNotRender);
+export default TaskItem;

@@ -6,10 +6,16 @@ import {
   TASK_REMOVE,
   SUBTASK_REMOVE,
   TASK_TRACKED,
+  PROJECT_ADD,
+  TAG_ADD,
+  PROJECT_EDIT,
+  TAG_EDIT,
 } from "./actions";
 //model
 import Task from "../model/Task";
 import { removeItem } from "../utils/utils";
+import Project from "../model/Project";
+import Tag from "../model/Tag";
 
 export default function reducer(state, action) {
   const projects = state.projects;
@@ -146,6 +152,34 @@ export default function reducer(state, action) {
           timeTracked: timeTracked,
         },
       },
+    };
+  }
+
+  if (action.type === PROJECT_ADD) {
+    const { title, color } = action.payload;
+    const newProject = Project({ title, color });
+    return { ...state, projects: { ...projects, [newProject.id]: newProject } };
+  }
+
+  if (action.type === PROJECT_EDIT) {
+    const { id, title, color } = action.payload;
+    return {
+      ...state,
+      projects: { ...projects, [id]: { ...projects[id], title, color } },
+    };
+  }
+
+  if (action.type === TAG_ADD) {
+    const { title, color } = action.payload;
+    const newTag = Tag({ title, color });
+    return { ...state, tags: { ...tags, [newTag.id]: newTag } };
+  }
+
+  if (action.type === TAG_EDIT) {
+    const { id, title, color } = action.payload;
+    return {
+      ...state,
+      tags: { ...tags, [id]: { ...tags[id], title, color } },
     };
   }
   return state;

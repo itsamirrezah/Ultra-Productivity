@@ -1,11 +1,13 @@
 import { Button, useDisclosure } from "@chakra-ui/react";
 import CreateNewModal from "./CreateNewModal";
+import { useDispatch } from "../../store/tasks-context";
 
 function CreateNewButton({ data }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const dispatch = useDispatch();
 
   function onCreateNewSection(payload) {
-    console.log("dispatch state with ", payload);
+    dispatch(data.button.action({ ...payload }));
   }
 
   return (

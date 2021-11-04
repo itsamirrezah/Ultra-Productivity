@@ -1,4 +1,4 @@
-//impors
+//imports
 import { useLocation } from "react-router-dom";
 import { VStack, Box, useDisclosure } from "@chakra-ui/react";
 //components
@@ -9,11 +9,9 @@ import CreateNewModal from "../UI/CreateNewModal";
 //data
 import useTasks, { useDispatch } from "../../store/tasks-context";
 //actions
-import { addTask } from "../../store/actions";
-// import appData from "../../data/app-data";
+import { addTask, editProject, editTag } from "../../store/actions";
 
 function Tasks() {
-  // const data = appData();
   const {
     isOpen: isNavOpen,
     onOpen: onOpenNav,
@@ -26,7 +24,7 @@ function Tasks() {
     onClose: onCloseModal,
   } = useDisclosure();
 
-  const { state: data } = useTasks();
+  const data = useTasks();
   const dispatch = useDispatch();
   const [_, filter, id] = useLocation().pathname.split("/");
   const section = data[filter][id];
@@ -50,8 +48,10 @@ function Tasks() {
     }
   }
 
-  function onEditSection(payload) {
-    console.log("dispatch state with ", payload);
+  function onEditSection({ title, color }) {
+    const payload = { id, title, color };
+    if (section._.toLowerCase() === "project") dispatch(editProject(payload));
+    else if (section._.toLowerCase() === "tag") dispatch(editTag(payload));
   }
 
   function onAddTaskHandler() {

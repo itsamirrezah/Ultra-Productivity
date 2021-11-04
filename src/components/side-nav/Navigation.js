@@ -8,8 +8,8 @@ import useTasks from "../../store/tasks-context";
 import navigationData from "../../data/nav-data";
 
 function Navigation() {
-  const navData = useTasks();
-  const items = navigationData(navData);
+  const { projects, tags } = useTasks();
+  const items = navigationData({ projects, tags });
 
   return (
     <VStack
