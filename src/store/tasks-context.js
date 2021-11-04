@@ -1,18 +1,31 @@
+//imports
 import { createContext, useReducer, useContext } from "react";
-
-//load tasks from dummy
+import { useEffect } from "react";
+//data
 import appData from "../data/app-data";
-const { projects, tags, tasks } = appData();
-const defaultTasks = { projects, tags, tasks };
-// const defaultTasks = {};
+
+//contexts
+const defaultTasks = {};
 const TasksContext = createContext(defaultTasks);
 const DispatchContext = createContext();
 // reducer
 import reducer from "./task-reducer";
 
-export function TasksProvider({ children }) {
-  const [state, dispatch] = useReducer(reducer, defaultTasks);
+function initializer() {
+  const db = localStorage.getItem("STORAGE");
+  if (!db) {
+    const { projects, tags, tasks } = appData();
+    return { projects, tags, tasks };
+  }
+  return JSON.parse(db);
+}
 
+export function TasksProvider({ children }) {
+  const [state, dispatch] = useReducer(reducer, defaultTasks, initializer);
+
+  useEffect(() => {
+    localStorage.setItem("STORAGE", JSON.stringify(state));
+  }, [state]);
   return (
     <DispatchContext.Provider value={dispatch}>
       <TasksContext.Provider value={state}>{children}</TasksContext.Provider>

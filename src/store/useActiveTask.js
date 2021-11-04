@@ -1,12 +1,11 @@
+//imports
 import { useState, useEffect } from "react";
+//model
 import ActiveTask from "../model/ActiveTask";
-import { setTaskTracked } from "../store/actions";
-//load active task from dummy
-import appData from "../data/app-data";
+//data
 import { useDispatch } from "./tasks-context";
-const { activeTask: dummyActiveTask } = appData();
-localStorage.clear();
-localStorage.setItem("ACTIVE_TASK", JSON.stringify(dummyActiveTask));
+//actions
+import { setTaskTracked } from "../store/actions";
 
 //global states
 let activeTask = ActiveTask({});
@@ -52,10 +51,11 @@ export default function useActiveTask({ shouldObserve = false, task = null }) {
   }
 
   function cleanup(active) {
+    const { lastTrackedAt, ...rest } = active;
     unsetVariables();
     unsetActiveTask();
     unsubscribe(active.id);
-    dispatch(setTaskTracked({ ...active }));
+    dispatch(setTaskTracked({ ...rest }));
   }
 
   function play(task) {
@@ -73,9 +73,11 @@ export default function useActiveTask({ shouldObserve = false, task = null }) {
   function startTracking() {
     isTrackStarted = true;
     interval = setInterval(() => {
+      const now = new Date().getTime();
       setActiveTask({
         ...activeTask,
-        timeTracked: activeTask.timeTracked + 2000,
+        timeTracked: now - activeTask.lastTrackedAt + activeTask.timeTracked,
+        lastTrackedAt: now,
       });
     }, 2000);
     return () => clearInterval(interval);
