@@ -11,7 +11,7 @@ import {
   FaWindowClose,
 } from "react-icons/fa";
 //components
-import TagItems from "../tags/TagItems";
+import TagItem from "../tags/TagItem";
 //data
 import useActiveTask from "../../store/useActiveTask";
 // actions
@@ -22,7 +22,7 @@ import {
   removeSubtask,
 } from "../../store/actions";
 
-function TaskItem({ task, props }) {
+function TaskItem({ task, props, onOpenTag }) {
   const { id, title, isDone, tags, parentId } = task;
   const { activeTask, play, pause, dispatch } = useActiveTask({ task: task });
   const isActive = activeTask.id === task.id;
@@ -108,7 +108,9 @@ function TaskItem({ task, props }) {
             onClick={addSubtaskHandler}
           />
         )}
-        {!parentId && <IconButton icon={<FaTag />} variant="ghost" />}
+        {!parentId && (
+          <IconButton icon={<FaTag />} variant="ghost" onClick={onOpenTag} />
+        )}
         <IconButton
           icon={<FaWindowClose />}
           variant="ghost"
@@ -140,7 +142,13 @@ function TaskItem({ task, props }) {
             transition="transform 123ms cubic-bezier(.4,0,1,1)"
           />
           {/* display tags if available */}
-          {tags && <TagItems items={tags} />}
+          {tags && (
+            <Flex justifyContent="flex-start">
+              {tags.map((tag) => (
+                <TagItem key={tag.id} tag={tag} size="md" />
+              ))}
+            </Flex>
+          )}
         </Flex>
       </HStack>
     </Box>

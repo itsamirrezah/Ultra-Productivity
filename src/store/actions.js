@@ -8,6 +8,7 @@ export const PROJECT_ADD = "PROJECT_ADD";
 export const PROJECT_EDIT = "PROJECT_EDIT";
 export const TAG_ADD = "TAG_ADD";
 export const TAG_EDIT = "TAG_EDIT";
+export const TASK_ADD_TAG = "TASK_ADD_TAG";
 
 export function setTaskDone({ id, isDone }) {
   return { type: TASK_DONE, payload: { id, isDone } };
@@ -47,4 +48,8 @@ export function addTag({ title, color }) {
 
 export function editTag({ id, title, color }) {
   return { type: TAG_EDIT, payload: { id, title, color } };
+}
+
+export function addTaskTag({ id, tagIds }) {
+  return { type: TASK_ADD_TAG, payload: { id, tagIds } };
 }

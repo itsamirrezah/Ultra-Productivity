@@ -10,6 +10,7 @@ import {
   TAG_ADD,
   PROJECT_EDIT,
   TAG_EDIT,
+  TASK_ADD_TAG,
 } from "./actions";
 //model
 import Task from "../model/Task";
@@ -155,6 +156,13 @@ export default function reducer(state, action) {
     };
   }
 
+  if (action.type === TASK_ADD_TAG) {
+    const { id, tagIds } = action.payload;
+    return {
+      ...state,
+      tasks: { ...tasks, [id]: { ...tasks[id], tagIds: tagIds } },
+    };
+  }
   if (action.type === PROJECT_ADD) {
     const { title, color } = action.payload;
     const newProject = Project({ title, color });

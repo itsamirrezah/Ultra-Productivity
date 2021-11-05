@@ -9,7 +9,7 @@ import CreateNewModal from "../UI/CreateNewModal";
 //data
 import useTasks, { useDispatch } from "../../store/tasks-context";
 //actions
-import { addTask, editProject, editTag } from "../../store/actions";
+import { addTask, editProject, editTag, addTaskTag } from "../../store/actions";
 
 function Tasks() {
   const {
@@ -62,6 +62,10 @@ function Tasks() {
     dispatch(action);
   }
 
+  function onAddTaskTagHandler(id, tagIds) {
+    dispatch(addTaskTag({ id, tagIds }));
+  }
+
   return (
     <>
       <VStack
@@ -81,11 +85,20 @@ function Tasks() {
           isEditable={section.id !== "today"}
           onAddTaskHandler={onAddTaskHandler}
         />
-        <VStack w="full" spacing="0">
+        <VStack w="full" spacing="1">
           {/* working status */}
           <Box>Working: 2h 3m</Box>
           {/* taskItems */}
-          <TaskItems tasks={filteredTasks} />
+          {filteredTasks.map((task) => {
+            return (
+              <TaskItems
+                key={task}
+                task={task}
+                allTags={data.tags}
+                onAddTags={onAddTaskTagHandler}
+              />
+            );
+          })}
         </VStack>
       </VStack>
       <NavDrawer isOpen={isNavOpen} onClose={onCloseNav} />
