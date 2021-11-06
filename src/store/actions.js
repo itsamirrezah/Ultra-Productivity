@@ -9,6 +9,8 @@ export const PROJECT_EDIT = "PROJECT_EDIT";
 export const TAG_ADD = "TAG_ADD";
 export const TAG_EDIT = "TAG_EDIT";
 export const TASK_ADD_TAG = "TASK_ADD_TAG";
+export const TASK_ADD_DAY = "TASK_ADD_DAY";
+export const TASK_REMOVE_DAY = "TASK_REMOVE_DAY";
 
 export function setTaskDone({ id, isDone }) {
   return { type: TASK_DONE, payload: { id, isDone } };
@@ -52,4 +54,12 @@ export function editTag({ id, title, color }) {
 
 export function addTaskTag({ id, tagIds }) {
   return { type: TASK_ADD_TAG, payload: { id, tagIds } };
+}
+
+export function addTaskToDay({ id }) {
+  return { type: TASK_ADD_DAY, payload: { id } };
+}
+
+export function removeTaskFromDay({ id }) {
+  return { type: TASK_REMOVE_DAY, payload: { id } };
 }

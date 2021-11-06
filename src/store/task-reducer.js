@@ -11,6 +11,8 @@ import {
   PROJECT_EDIT,
   TAG_EDIT,
   TASK_ADD_TAG,
+  TASK_ADD_DAY,
+  TASK_REMOVE_DAY,
 } from "./actions";
 //model
 import Task from "../model/Task";
@@ -158,11 +160,72 @@ export default function reducer(state, action) {
 
   if (action.type === TASK_ADD_TAG) {
     const { id, tagIds } = action.payload;
+    const task = tasks[id];
+
+    let updatedTags = tags;
+
+    // remove old taskId from each tag
+    task.tagIds.forEach((tId) => {
+      updatedTags = {
+        ...updatedTags,
+        [tId]: {
+          ...tags[tId],
+          taskIds: tags[tId].taskIds.filter((taskId) => taskId !== task.id),
+        },
+      };
+    });
+    //add updated taskId to each tag
+    tagIds.forEach((tId) => {
+      updatedTags = {
+        ...updatedTags,
+        [tId]: { ...tags[tId], taskIds: [...tags[tId].taskIds, task.id] },
+      };
+    });
+
     return {
       ...state,
       tasks: { ...tasks, [id]: { ...tasks[id], tagIds: tagIds } },
+      tags: updatedTags,
     };
   }
+
+  if (action.type === TASK_ADD_DAY) {
+    const { id } = action.payload;
+    return {
+      ...state,
+      tasks: {
+        ...tasks,
+        [id]: { ...tasks[id], tagIds: [...tasks[id].tagIds, "today"] },
+      },
+      tags: {
+        ...tags,
+        today: { ...tags.today, taskIds: [...tags.today.taskIds, id] },
+      },
+    };
+  }
+
+  if (action.type === TASK_REMOVE_DAY) {
+    const { id } = action.payload;
+
+    return {
+      ...state,
+      tasks: {
+        ...tasks,
+        [id]: {
+          ...tasks[id],
+          tagIds: tasks[id].tagIds.filter((tId) => tId !== "today"),
+        },
+      },
+      tags: {
+        ...tags,
+        today: {
+          ...tags.today,
+          taskIds: tags.today.taskIds.filter((tId) => tId !== id),
+        },
+      },
+    };
+  }
+
   if (action.type === PROJECT_ADD) {
     const { title, color } = action.payload;
     const newProject = Project({ title, color });

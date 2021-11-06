@@ -1,6 +1,6 @@
 //imports
 import { HStack, Flex, Box, Input, Icon, IconButton } from "@chakra-ui/react";
-import { FaGripLines } from "react-icons/fa";
+import { FaGripLines, FaMinusCircle, FaPlusCircle } from "react-icons/fa";
 import {
   FaUndo,
   FaPlay,
@@ -20,12 +20,15 @@ import {
   addSubtask,
   removeTask,
   removeSubtask,
+  addTaskToDay,
+  removeTaskFromDay,
 } from "../../store/actions";
 
 function TaskItem({ task, props, onOpenTag }) {
   const { id, title, isDone, tags, parentId } = task;
   const { activeTask, play, pause, dispatch } = useActiveTask({ task: task });
   const isActive = activeTask.id === task.id;
+  const isToday = task.tagIds.includes("today");
 
   function setDoneHandler() {
     if (isActive) pause();
@@ -41,6 +44,13 @@ function TaskItem({ task, props, onOpenTag }) {
     else dispatch(removeSubtask({ id, parentId }));
   }
 
+  function addToDayHandler() {
+    dispatch(addTaskToDay({ id: task.id }));
+  }
+
+  function removeFromDayHandler() {
+    dispatch(removeTaskFromDay({ id: task.id }));
+  }
   return (
     <Box
       w="full"
@@ -101,6 +111,23 @@ function TaskItem({ task, props, onOpenTag }) {
             onClick={setDoneHandler}
           />
         )}
+
+        {!parentId && isToday && (
+          <IconButton
+            icon={<FaMinusCircle />}
+            variant="ghost"
+            onClick={removeFromDayHandler}
+          />
+        )}
+
+        {!parentId && !isToday && (
+          <IconButton
+            icon={<FaPlusCircle />}
+            variant="ghost"
+            onClick={addToDayHandler}
+          />
+        )}
+
         {!parentId && (
           <IconButton
             icon={<FaPlusSquare />}
@@ -111,6 +138,7 @@ function TaskItem({ task, props, onOpenTag }) {
         {!parentId && (
           <IconButton icon={<FaTag />} variant="ghost" onClick={onOpenTag} />
         )}
+
         <IconButton
           icon={<FaWindowClose />}
           variant="ghost"
