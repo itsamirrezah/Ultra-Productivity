@@ -32,7 +32,6 @@ function SubtaskItems({ items }) {
         items.map((subtask) => {
           const taskItem = (
             <TaskItem
-              key={subtask.id}
               task={subtask}
               props={{
                 alignSelf: "flex-end",
@@ -42,17 +41,15 @@ function SubtaskItems({ items }) {
             />
           );
 
-          if (subtask.isDone)
-            return (
-              <Collapse
-                key={subtask.id}
-                in={!isCollapse}
-                style={{ width: "100%" }}
-              >
-                {taskItem}
-              </Collapse>
-            );
-          return taskItem;
+          return (
+            <Collapse
+              key={subtask.id}
+              in={isCollapse ? !subtask.isDone : true}
+              style={{ width: "100%" }}
+            >
+              {taskItem}
+            </Collapse>
+          );
         })}
     </VStack>
   );

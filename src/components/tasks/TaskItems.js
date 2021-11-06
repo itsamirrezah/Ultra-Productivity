@@ -1,9 +1,9 @@
 //imports
 import { VStack, useDisclosure } from "@chakra-ui/react";
-import EditTagModal from "./EditTagModal";
-import SubtaskItems from "./SubtaskItems";
 //components
 import TaskItem from "./TaskItem";
+import EditTagModal from "./EditTagModal";
+import SubtaskItems from "./SubtaskItems";
 
 function TaskItems({ task, allTags, onAddTags }) {
   const { isOpen, onOpen, onClose } = useDisclosure();

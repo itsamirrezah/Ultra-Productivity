@@ -6,9 +6,8 @@ import TaskItems from "../tasks/TaskItems";
 import Header from "../UI/Header";
 import NavDrawer from "../side-nav/NavDrawer";
 import CreateNewModal from "../UI/CreateNewModal";
-//data
+//data & actions
 import useTasks, { useDispatch } from "../../store/tasks-context";
-//actions
 import { addTask, editProject, editTag, addTaskTag } from "../../store/actions";
 
 function Tasks() {
