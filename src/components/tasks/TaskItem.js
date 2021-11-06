@@ -31,7 +31,7 @@ function TaskItem({ task, props, onOpenTag }) {
   const isToday = task.tagIds.includes("today");
 
   function setDoneHandler() {
-    if (isActive) pause();
+    if (isActive || task.subTaskIds.includes(activeTask.id)) pause();
     dispatch(setTaskDone({ id, isDone: !isDone }));
   }
 
@@ -40,6 +40,7 @@ function TaskItem({ task, props, onOpenTag }) {
   }
 
   function removeTaskHandler() {
+    if (isActive || task.subTaskIds.includes(activeTask.id)) pause();
     if (!parentId) dispatch(removeTask({ id }));
     else dispatch(removeSubtask({ id, parentId }));
   }

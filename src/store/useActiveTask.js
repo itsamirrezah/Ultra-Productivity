@@ -35,12 +35,17 @@ export default function useActiveTask({ shouldObserve = false, task = null }) {
 
   const dispatch = useDispatch();
 
-  function subscribe(id) {
-    liveObservers = { ...liveObservers, [id]: observers[id] };
+  function subscribe(id, parentId) {
+    const parent = parentId ? { [parentId]: observers[parentId] } : {};
+    liveObservers = {
+      ...liveObservers,
+      [id]: observers[id],
+      ...parent,
+    };
   }
 
-  function unsubscribe(id) {
-    const { [id]: _, ...remain } = liveObservers;
+  function unsubscribe(id, parentId) {
+    const { [id]: task, [parentId]: parent, ...remain } = liveObservers;
     liveObservers = remain;
   }
 
@@ -51,18 +56,18 @@ export default function useActiveTask({ shouldObserve = false, task = null }) {
   }
 
   function cleanup(active) {
-    const { lastTrackedAt, ...rest } = active;
+    const { lastTrackedAt, ...task } = active;
     unsetVariables();
     unsetActiveTask();
-    unsubscribe(active.id);
-    dispatch(setTaskTracked({ ...rest }));
+    unsubscribe(active.id, active.parentId);
+    dispatch(setTaskTracked({ ...task }));
   }
 
   function play(task) {
     if (activeTask.id) {
-      cleanup(activeTask);
+      cleanup(activeTask, task.parentId);
     }
-    subscribe(task.id);
+    subscribe(task.id, task.parentId);
     setActiveTask(task);
   }
 
@@ -96,7 +101,11 @@ export default function useActiveTask({ shouldObserve = false, task = null }) {
   //subscription
   useEffect(() => {
     observers = { ...observers, [task ? task.id : "default"]: newObserver };
-    if (shouldObserve || task.id === activeTask.id)
+    if (
+      shouldObserve ||
+      task.id === activeTask.id ||
+      task.subTaskIds.includes(activeTask.id)
+    )
       liveObservers = {
         ...liveObservers,
         [task ? task.id : "default"]: newObserver,
