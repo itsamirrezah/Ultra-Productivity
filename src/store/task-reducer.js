@@ -178,7 +178,10 @@ export default function reducer(state, action) {
     tagIds.forEach((tId) => {
       updatedTags = {
         ...updatedTags,
-        [tId]: { ...tags[tId], taskIds: [...tags[tId].taskIds, task.id] },
+        [tId]: {
+          ...tags[tId],
+          taskIds: [...updatedTags[tId].taskIds, task.id],
+        },
       };
     });
 

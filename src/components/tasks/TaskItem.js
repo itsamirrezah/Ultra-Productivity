@@ -50,7 +50,8 @@ function TaskItem({ task, props, onOpenTag }) {
   }
 
   function removeFromDayHandler() {
-    dispatch(removeTaskFromDay({ id: task.id }));
+    if (task.projectId || task.tagIds.length > 1)
+      dispatch(removeTaskFromDay({ id: task.id }));
   }
   return (
     <Box

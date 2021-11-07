@@ -4,14 +4,7 @@ import TagItem from "../tags/TagItem";
 import { useState } from "react";
 import { useRef } from "react";
 
-function EditTagModal({
-  isOpen,
-  onClose,
-  taskTitle,
-  onSubmit,
-  tagIds,
-  allTags,
-}) {
+function EditTagModal({ isOpen, onClose, task, onSubmit, tagIds, allTags }) {
   const [isSearchBox, setSearchBox] = useState(false);
   const [selectedTags, setSelectedTags] = useState(tagIds);
   const [searchResult, setSearchResult] = useState(null);
@@ -27,7 +20,8 @@ function EditTagModal({
   }
 
   function onRemoveTag(tagId) {
-    setSelectedTags((state) => state.filter((id) => id !== tagId));
+    if (task.projectId || selectedTags.length > 1)
+      setSelectedTags((state) => state.filter((id) => id !== tagId));
   }
 
   function search(e) {
@@ -44,7 +38,7 @@ function EditTagModal({
       isOpen={isOpen}
       onClose={onClose}
       size="lg"
-      title={`Edit Tag for "${taskTitle}"`}
+      title={`Edit Tag for "${task.title}"`}
       onSubmit={onSubmitHandler}
       submitCaption="Submit"
     >

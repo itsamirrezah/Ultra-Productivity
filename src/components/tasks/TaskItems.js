@@ -25,6 +25,7 @@ function TaskItems({ task, allTags, onAddTags }) {
           isOpen={isOpen}
           onClose={onClose}
           tagIds={task.tagIds}
+          task={task}
           allTags={allTags}
           onSubmit={(tagIds) => onAddTags(task.id, tagIds)}
         />

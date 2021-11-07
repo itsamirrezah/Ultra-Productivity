@@ -1,6 +1,6 @@
 //imports
 import { HStack } from "@chakra-ui/layout";
-import { Route } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 //components
 import SideNav from "./components/side-nav/SideNav";
 import Tasks from "./components/pages/Tasks";
@@ -11,6 +11,9 @@ function App() {
       {/* side nav section */}
       <SideNav />
       {/* tasks  section*/}
+      <Route exact path="/">
+        <Redirect to="/tags/today" />
+      </Route>
       <Route path="/:section(projects|tags)/:id">
         <Tasks />
       </Route>
