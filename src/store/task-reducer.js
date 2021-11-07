@@ -13,6 +13,7 @@ import {
   TASK_ADD_TAG,
   TASK_ADD_DAY,
   TASK_REMOVE_DAY,
+  TASK_SET_TITLE,
 } from "./actions";
 //model
 import Task from "../model/Task";
@@ -24,6 +25,14 @@ export default function reducer(state, action) {
   const projects = state.projects;
   const tags = state.tags;
   const tasks = state.tasks;
+
+  if (action.type === TASK_SET_TITLE) {
+    const { id, title } = action.payload;
+    return {
+      ...state,
+      tasks: { ...tasks, [id]: { ...tasks[id], title } },
+    };
+  }
 
   if (action.type === TASK_DONE) {
     const { id, isDone } = action.payload;

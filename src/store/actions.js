@@ -11,6 +11,7 @@ export const TAG_EDIT = "TAG_EDIT";
 export const TASK_ADD_TAG = "TASK_ADD_TAG";
 export const TASK_ADD_DAY = "TASK_ADD_DAY";
 export const TASK_REMOVE_DAY = "TASK_REMOVE_DAY";
+export const TASK_SET_TITLE = "TASK_SET_TITLE";
 
 export function setTaskDone({ id, isDone }) {
   return { type: TASK_DONE, payload: { id, isDone } };
@@ -62,4 +63,8 @@ export function addTaskToDay({ id }) {
 
 export function removeTaskFromDay({ id }) {
   return { type: TASK_REMOVE_DAY, payload: { id } };
+}
+
+export function setTaskTitle({ id, title }) {
+  return { type: TASK_SET_TITLE, payload: { id, title } };
 }

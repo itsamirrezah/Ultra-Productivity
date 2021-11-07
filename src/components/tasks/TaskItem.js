@@ -1,5 +1,13 @@
 //imports
-import { HStack, Flex, Box, Input, Icon, IconButton } from "@chakra-ui/react";
+import {
+  HStack,
+  Flex,
+  Box,
+  Input,
+  Icon,
+  IconButton,
+  Tooltip,
+} from "@chakra-ui/react";
 import { FaGripLines, FaMinusCircle, FaPlusCircle } from "react-icons/fa";
 import {
   FaUndo,
@@ -22,13 +30,20 @@ import {
   removeSubtask,
   addTaskToDay,
   removeTaskFromDay,
+  setTaskTitle,
 } from "../../store/actions";
+import { useState } from "react";
 
 function TaskItem({ task, props, onOpenTag }) {
   const { id, title, isDone, tags, parentId } = task;
+  const [input, setInput] = useState(title);
   const { activeTask, play, pause, dispatch } = useActiveTask({ task: task });
   const isActive = activeTask.id === task.id;
   const isToday = task.tagIds.includes("today");
+
+  function setTitleHandler() {
+    if (title !== input) dispatch(setTaskTitle({ id, title: input }));
+  }
 
   function setDoneHandler() {
     if (isActive || task.subTaskIds.includes(activeTask.id)) pause();
@@ -53,6 +68,7 @@ function TaskItem({ task, props, onOpenTag }) {
     if (task.projectId || task.tagIds.length > 1)
       dispatch(removeTaskFromDay({ id: task.id }));
   }
+
   return (
     <Box
       w="full"
@@ -65,16 +81,18 @@ function TaskItem({ task, props, onOpenTag }) {
       {...props}
     >
       {isDone && (
-        <IconButton
-          pos="absolute"
-          zIndex="1"
-          left="50%"
-          top="50%"
-          transform="translate(-50%,-50%)"
-          variant="ghost"
-          icon={<FaUndo />}
-          onClick={setDoneHandler}
-        />
+        <Tooltip label="Revert">
+          <IconButton
+            pos="absolute"
+            zIndex="1"
+            left="50%"
+            top="50%"
+            transform="translate(-50%,-50%)"
+            variant="ghost"
+            icon={<FaUndo />}
+            onClick={setDoneHandler}
+          />
+        </Tooltip>
       )}
       <Box
         pos="absolute"
@@ -96,56 +114,71 @@ function TaskItem({ task, props, onOpenTag }) {
         transform="translateY(-50%)"
       >
         {isActive && !isDone && (
-          <IconButton icon={<FaPause />} variant="ghost" onClick={pause} />
+          <Tooltip label="Pause">
+            <IconButton icon={<FaPause />} variant="ghost" onClick={pause} />
+          </Tooltip>
         )}
         {!isActive && !isDone && (
-          <IconButton
-            icon={<FaPlay />}
-            variant="ghost"
-            onClick={play.bind(null, task)}
-          />
+          <Tooltip label="Start Tracking">
+            <IconButton
+              icon={<FaPlay />}
+              variant="ghost"
+              onClick={play.bind(null, task)}
+            />
+          </Tooltip>
         )}
 
         {!isDone && (
-          <IconButton
-            icon={<FaCheck />}
-            variant="ghost"
-            onClick={setDoneHandler}
-          />
+          <Tooltip label="Done Task">
+            <IconButton
+              icon={<FaCheck />}
+              variant="ghost"
+              onClick={setDoneHandler}
+            />
+          </Tooltip>
         )}
 
         {!parentId && isToday && (
-          <IconButton
-            icon={<FaMinusCircle />}
-            variant="ghost"
-            onClick={removeFromDayHandler}
-          />
+          <Tooltip label="Remove From My Day">
+            <IconButton
+              icon={<FaMinusCircle />}
+              variant="ghost"
+              onClick={removeFromDayHandler}
+            />
+          </Tooltip>
         )}
 
         {!parentId && !isToday && (
-          <IconButton
-            icon={<FaPlusCircle />}
-            variant="ghost"
-            onClick={addToDayHandler}
-          />
+          <Tooltip label="Add To My Day">
+            <IconButton
+              icon={<FaPlusCircle />}
+              variant="ghost"
+              onClick={addToDayHandler}
+            />
+          </Tooltip>
         )}
 
         {!parentId && (
-          <IconButton
-            icon={<FaPlusSquare />}
-            variant="ghost"
-            onClick={addSubtaskHandler}
-          />
+          <Tooltip label="Add Subtask">
+            <IconButton
+              icon={<FaPlusSquare />}
+              variant="ghost"
+              onClick={addSubtaskHandler}
+            />
+          </Tooltip>
         )}
         {!parentId && (
-          <IconButton icon={<FaTag />} variant="ghost" onClick={onOpenTag} />
+          <Tooltip label="Edit Tags">
+            <IconButton icon={<FaTag />} variant="ghost" onClick={onOpenTag} />
+          </Tooltip>
         )}
-
-        <IconButton
-          icon={<FaWindowClose />}
-          variant="ghost"
-          onClick={removeTaskHandler}
-        />
+        <Tooltip label="Delete Task">
+          <IconButton
+            icon={<FaWindowClose />}
+            variant="ghost"
+            onClick={removeTaskHandler}
+          />
+        </Tooltip>
       </Flex>
 
       <HStack spacing="4" px="4" opacity={isDone ? 0.3 : 1}>
@@ -156,7 +189,9 @@ function TaskItem({ task, props, onOpenTag }) {
         <Flex w="full" flexDir="column">
           <Input
             w="full"
-            value={title}
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onBlur={setTitleHandler}
             px="3"
             py="1"
             border="1px solid transparent"

@@ -17,6 +17,7 @@ function EditTagModal({ isOpen, onClose, task, onSubmit, tagIds, allTags }) {
 
   function onSubmitHandler() {
     onSubmit(selectedTags);
+    onClose();
   }
 
   function onRemoveTag(tagId) {
@@ -30,6 +31,7 @@ function EditTagModal({ isOpen, onClose, task, onSubmit, tagIds, allTags }) {
   }
 
   function onAddTag(tag) {
+    setSearchBox(false);
     setSelectedTags((state) => [...state, tag.id]);
     setSearchResult("");
   }
@@ -42,13 +44,15 @@ function EditTagModal({ isOpen, onClose, task, onSubmit, tagIds, allTags }) {
       onSubmit={onSubmitHandler}
       submitCaption="Submit"
     >
-      <HStack
+      <Flex
         pos="relative"
         flexWrap="wrap"
-        alignItems="center"
         p="1"
         transition="all 0.7s"
-        _focusWithin={{ borderBottom: "2px solid blue" }}
+        _focusWithin={{
+          borderBottom: "1px solid",
+          borderBottomColor: "lightblue",
+        }}
         ref={ref}
         borderBottom="2px solid gray"
       >
@@ -77,6 +81,17 @@ function EditTagModal({ isOpen, onClose, task, onSubmit, tagIds, allTags }) {
           <Flex
             w="full"
             flexDir="column"
+            maxH="44"
+            overflow="scroll"
+            sx={{
+              "&::-webkit-scrollbar": {
+                display: "none",
+              },
+              "&": {
+                "-ms-overflow-style": "none",
+                "scrollbar-width": "none",
+              },
+            }}
             pos="absolute"
             zIndex="10"
             top="120%"
@@ -97,6 +112,51 @@ function EditTagModal({ isOpen, onClose, task, onSubmit, tagIds, allTags }) {
                   key={tag.id}
                   cursor="pointer"
                   onClick={() => onAddTag(tag)}
+                  px="4"
+                  py="2"
+                  _hover={{ bgColor: "whiteAlpha.200" }}
+                >
+                  {tag.title}
+                </Text>
+              );
+            })}
+            {Object.keys(allTags).map((id) => {
+              const tag = allTags[id];
+              if (
+                tag.type < 0 ||
+                selectedTags.includes(id) ||
+                (searchResult && tag.title.search(searchResult) < 0)
+              )
+                return;
+              return (
+                <Text
+                  key={tag.id}
+                  cursor="pointer"
+                  onClick={() => onAddTag(tag)}
+                  px="4"
+                  py="2"
+                  _hover={{ bgColor: "whiteAlpha.200" }}
+                >
+                  {tag.title}
+                </Text>
+              );
+            })}
+            {Object.keys(allTags).map((id) => {
+              const tag = allTags[id];
+              if (
+                tag.type < 0 ||
+                selectedTags.includes(id) ||
+                (searchResult && tag.title.search(searchResult) < 0)
+              )
+                return;
+              return (
+                <Text
+                  key={tag.id}
+                  cursor="pointer"
+                  onClick={() => onAddTag(tag)}
+                  px="4"
+                  py="2"
+                  _hover={{ bgColor: "whiteAlpha.200" }}
                 >
                   {tag.title}
                 </Text>
@@ -104,7 +164,7 @@ function EditTagModal({ isOpen, onClose, task, onSubmit, tagIds, allTags }) {
             })}
           </Flex>
         )}
-      </HStack>
+      </Flex>
     </Modal>
   );
 }

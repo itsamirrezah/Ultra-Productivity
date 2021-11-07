@@ -29,6 +29,7 @@ function CreateNewModal({
   function onSubmitHandler() {
     const payload = { title: input, color: selectedColor };
     onSubmit(payload);
+    onClose();
   }
 
   return (

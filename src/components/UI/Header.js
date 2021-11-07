@@ -1,5 +1,12 @@
 //imports
-import { HStack, Box, IconButton, Heading, Text } from "@chakra-ui/react";
+import {
+  HStack,
+  Box,
+  IconButton,
+  Heading,
+  Text,
+  Tooltip,
+} from "@chakra-ui/react";
 import { BsListNested } from "react-icons/bs";
 import { FaPause, FaPlay, FaPlus, FaSearch, FaEllipsisV } from "react-icons/fa";
 //data
@@ -55,12 +62,16 @@ function Header({
         </HStack>
 
         <HStack>
-          <IconButton
-            icon={<FaPlus />}
-            variant="ghost"
-            onClick={onAddTaskHandler}
-          />
-          <IconButton icon={<FaSearch />} variant="ghost" />
+          <Tooltip label="Add Task">
+            <IconButton
+              icon={<FaPlus />}
+              variant="ghost"
+              onClick={onAddTaskHandler}
+            />
+          </Tooltip>
+          <Tooltip label="Search">
+            <IconButton icon={<FaSearch />} variant="ghost" />
+          </Tooltip>
           <Box pos="relative">
             {activeTask.id && (
               <Box
@@ -89,13 +100,15 @@ function Header({
                 </Text>
               </Box>
             )}
-            <IconButton
-              onClick={activeTask.id ? pause : startTracking}
-              borderRadius="full"
-              variant="outline"
-              bgColor={!activeTask.id ? "blue.800" : "red.800"}
-              icon={activeTask.id ? <FaPause /> : <FaPlay />}
-            />
+            <Tooltip label={activeTask.id ? "Pause" : "Start Tracking"}>
+              <IconButton
+                onClick={activeTask.id ? pause : startTracking}
+                borderRadius="full"
+                variant="outline"
+                bgColor={!activeTask.id ? "blue.800" : "red.800"}
+                icon={activeTask.id ? <FaPause /> : <FaPlay />}
+              />
+            </Tooltip>
           </Box>
         </HStack>
       </HStack>
