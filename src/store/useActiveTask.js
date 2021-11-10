@@ -45,6 +45,7 @@ export default function useActiveTask({ shouldObserve = false, task = null }) {
   }
 
   function unsubscribe(id, parentId) {
+    // eslint-disable-next-line no-unused-vars
     const { [id]: task, [parentId]: parent, ...remain } = liveObservers;
     liveObservers = remain;
   }
@@ -56,6 +57,7 @@ export default function useActiveTask({ shouldObserve = false, task = null }) {
   }
 
   function cleanup(active) {
+    // eslint-disable-next-line no-unused-vars
     const { lastTrackedAt, ...task } = active;
     unsetVariables();
     unsetActiveTask();
@@ -111,10 +113,12 @@ export default function useActiveTask({ shouldObserve = false, task = null }) {
         [task ? task.id : "default"]: newObserver,
       };
     return () => {
+      // eslint-disable-next-line no-unused-vars
       const { [task ? task.id : "default"]: _, ...remain } = liveObservers;
       liveObservers = remain;
     };
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [newObserver]);
 
   return { activeTask, play, pause, dispatch };
 }

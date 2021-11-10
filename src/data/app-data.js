@@ -1,3 +1,5 @@
+//utils
+import { removeItem } from "../utils/utils";
 //models
 import Project from "../model/Project";
 import Tag from "../model/Tag";
@@ -108,9 +110,22 @@ function generateRelation() {
         task = { ...task, subTaskIds: [...task.subTaskIds, randomTask.id] };
       }
     }
-
     tasks = { ...tasks, [task.id]: task };
   });
+
+  let temp = { ...tasks };
+  Object.keys(tasks).forEach((taskId) => {
+    const task = tasks[taskId];
+    if (task.parentId) return;
+
+    if (!task.projectId && task.tagIds.length === 0) {
+      temp = removeItem(temp, task.id);
+      task.subTaskIds.forEach((subId) => {
+        temp = removeItem(temp, subId);
+      });
+    }
+  });
+  tasks = temp;
 }
 
 function generateActiveTask() {

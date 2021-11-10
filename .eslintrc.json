@@ -34,16 +34,6 @@
         "input[type=\"image\"]": ["InputImage"]
       }
     ],
-    "react/jsx-no-bind": [
-      1,
-      {
-        "ignoreDOMComponents": false,
-        "ignoreRefs": true,
-        "allowArrowFunctions": false,
-        "allowFunctions": false,
-        "allowBind": false
-      }
-    ],
     "react/prop-types": [0, {}],
     "no-unused-vars": "warn"
   },

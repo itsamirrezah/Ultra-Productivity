@@ -79,7 +79,8 @@ export default function reducer(state, action) {
 
   if (action.type === SUBTASK_ADD) {
     const { parentId } = action.payload;
-    const subtask = Task({ parentId });
+    const parent = tasks[parentId];
+    const subtask = Task({ parentId, projectId: parent.projectId });
 
     return {
       ...state,
