@@ -6,6 +6,7 @@ import TaskItems from "../tasks/TaskItems";
 import Header from "../UI/Header";
 import NavDrawer from "../side-nav/NavDrawer";
 import CreateNewModal from "../UI/CreateNewModal";
+import SearchModal from "../UI/SearchModal";
 //data & actions
 import useTasks, { useDispatch } from "../../store/tasks-context";
 import { addTask, editProject, editTag, addTaskTag } from "../../store/actions";
@@ -18,13 +19,20 @@ function Tasks() {
   } = useDisclosure();
 
   const {
-    isOpen: isModalOpen,
-    onOpen: onOpenModal,
-    onClose: onCloseModal,
+    isOpen: isEditModalOpen,
+    onOpen: onOpenEditModal,
+    onClose: onCloseEditModal,
+  } = useDisclosure();
+
+  const {
+    isOpen: isSearchModalOpen,
+    onOpen: onOpenSearchModal,
+    onClose: onCloseSearchModal,
   } = useDisclosure();
 
   const data = useTasks();
   const dispatch = useDispatch();
+  // eslint-disable-next-line no-unused-vars
   const [_, filter, id] = useLocation().pathname.split("/");
   const section = data[filter][id];
   const filteredTasks = section.taskIds.map((tId) => {
@@ -80,7 +88,8 @@ function Tasks() {
           availableTask={getAvailableTask}
           title={section.title}
           onOpenNav={onOpenNav}
-          onOpenModal={onOpenModal}
+          onOpenEditModal={onOpenEditModal}
+          onOpenSearchModal={onOpenSearchModal}
           isEditable={section.id !== "today"}
           onAddTaskHandler={onAddTaskHandler}
         />
@@ -91,7 +100,7 @@ function Tasks() {
           {filteredTasks.map((task) => {
             return (
               <TaskItems
-                key={task}
+                key={task.id}
                 task={task}
                 allTags={data.tags}
                 onAddTags={onAddTaskTagHandler}
@@ -101,15 +110,23 @@ function Tasks() {
         </VStack>
       </VStack>
       <NavDrawer isOpen={isNavOpen} onClose={onCloseNav} />
-      {isModalOpen && (
+      {isEditModalOpen && (
         <CreateNewModal
           header={`Edit ${section._}`}
-          isOpen={isModalOpen}
-          onClose={onCloseModal}
+          isOpen={isEditModalOpen}
+          onClose={onCloseEditModal}
           type={section._}
           color={section.color}
           title={section.title}
           onSubmit={onEditSection}
+        />
+      )}
+
+      {isSearchModalOpen && (
+        <SearchModal
+          data={data}
+          isOpen={isSearchModalOpen}
+          onClose={onCloseSearchModal}
         />
       )}
     </>

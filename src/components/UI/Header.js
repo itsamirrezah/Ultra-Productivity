@@ -17,7 +17,8 @@ function Header({
   availableTask,
   title,
   onOpenNav,
-  onOpenModal,
+  onOpenEditModal,
+  onOpenSearchModal,
   isEditable,
   onAddTaskHandler,
 }) {
@@ -56,7 +57,7 @@ function Header({
               className="edit-icon"
               variant="link"
               icon={<FaEllipsisV />}
-              onClick={onOpenModal}
+              onClick={onOpenEditModal}
             />
           )}
         </HStack>
@@ -70,7 +71,11 @@ function Header({
             />
           </Tooltip>
           <Tooltip label="Search">
-            <IconButton icon={<FaSearch />} variant="ghost" />
+            <IconButton
+              icon={<FaSearch />}
+              variant="ghost"
+              onClick={onOpenSearchModal}
+            />
           </Tooltip>
           <Box pos="relative">
             {activeTask.id && (

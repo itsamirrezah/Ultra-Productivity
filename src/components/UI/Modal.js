@@ -24,8 +24,8 @@ function Modal({
         <ModalHeader>{title}</ModalHeader>
         <ModalCloseButton />
         {children}
-        <ModalFooter>
-          <Button onClick={onSubmit}>{submitCaption}</Button>
+        <ModalFooter px="1">
+          {onSubmit && <Button onClick={onSubmit}>{submitCaption}</Button>}
         </ModalFooter>
       </ModalContent>
     </ChakraModel>

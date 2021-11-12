@@ -1,8 +1,10 @@
+//imports
+import { useState, useRef } from "react";
 import { Flex, HStack, Text, Input, useOutsideClick } from "@chakra-ui/react";
+//components
 import Modal from "../UI/Modal";
 import TagItem from "../tags/TagItem";
-import { useState } from "react";
-import { useRef } from "react";
+import ColorItem from "../colors/ColorItem";
 
 function EditTagModal({ isOpen, onClose, task, onSubmit, tagIds, allTags }) {
   const [isSearchBox, setSearchBox] = useState(false);
@@ -108,7 +110,7 @@ function EditTagModal({ isOpen, onClose, task, onSubmit, tagIds, allTags }) {
               )
                 return;
               return (
-                <Text
+                <HStack
                   key={tag.id}
                   cursor="pointer"
                   onClick={() => onAddTag(tag)}
@@ -116,50 +118,9 @@ function EditTagModal({ isOpen, onClose, task, onSubmit, tagIds, allTags }) {
                   py="2"
                   _hover={{ bgColor: "whiteAlpha.200" }}
                 >
-                  {tag.title}
-                </Text>
-              );
-            })}
-            {Object.keys(allTags).map((id) => {
-              const tag = allTags[id];
-              if (
-                tag.type < 0 ||
-                selectedTags.includes(id) ||
-                (searchResult && tag.title.search(searchResult) < 0)
-              )
-                return;
-              return (
-                <Text
-                  key={tag.id}
-                  cursor="pointer"
-                  onClick={() => onAddTag(tag)}
-                  px="4"
-                  py="2"
-                  _hover={{ bgColor: "whiteAlpha.200" }}
-                >
-                  {tag.title}
-                </Text>
-              );
-            })}
-            {Object.keys(allTags).map((id) => {
-              const tag = allTags[id];
-              if (
-                tag.type < 0 ||
-                selectedTags.includes(id) ||
-                (searchResult && tag.title.search(searchResult) < 0)
-              )
-                return;
-              return (
-                <Text
-                  key={tag.id}
-                  cursor="pointer"
-                  onClick={() => onAddTag(tag)}
-                  px="4"
-                  py="2"
-                  _hover={{ bgColor: "whiteAlpha.200" }}
-                >
-                  {tag.title}
-                </Text>
+                  <ColorItem color={tag.color} />
+                  <Text>{tag.title}</Text>
+                </HStack>
               );
             })}
           </Flex>

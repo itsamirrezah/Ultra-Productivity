@@ -1,5 +1,7 @@
-import { HStack, Circle } from "@chakra-ui/react";
-import { FaCheck } from "react-icons/fa";
+//imports
+import { HStack } from "@chakra-ui/react";
+import ColorItem from "./ColorItem";
+//components
 
 function ColorItems({ items, currentColor, setColor }) {
   return (
@@ -8,15 +10,12 @@ function ColorItems({ items, currentColor, setColor }) {
         const color = items[id];
         const isSelected = currentColor ? color === currentColor : 0;
         return (
-          <Circle
+          <ColorItem
             key={id}
-            size="25px"
-            bg={`${color}.600`}
-            cursor="pointer"
+            color={color}
+            isSelected={isSelected}
             onClick={() => setColor(color)}
-          >
-            {isSelected ? <FaCheck size="12" /> : null}
-          </Circle>
+          />
         );
       })}
     </HStack>
