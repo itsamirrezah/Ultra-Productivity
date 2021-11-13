@@ -3,10 +3,10 @@ import { useLocation } from "react-router-dom";
 import { VStack, Box, useDisclosure } from "@chakra-ui/react";
 //components
 import TaskItems from "../tasks/TaskItems";
-import Header from "../UI/Header";
+import Header from "../tasks/Header";
 import NavDrawer from "../side-nav/NavDrawer";
 import CreateNewModal from "../UI/CreateNewModal";
-import SearchModal from "../UI/SearchModal";
+import SearchTaskModal from "../search/SearchTaskModal";
 //data & actions
 import useTasks, { useDispatch } from "../../store/tasks-context";
 import { addTask, editProject, editTag, addTaskTag } from "../../store/actions";
@@ -123,7 +123,7 @@ function Tasks() {
       )}
 
       {isSearchModalOpen && (
-        <SearchModal
+        <SearchTaskModal
           data={data}
           isOpen={isSearchModalOpen}
           onClose={onCloseSearchModal}

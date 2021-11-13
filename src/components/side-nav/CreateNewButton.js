@@ -1,5 +1,5 @@
 import { Button, useDisclosure } from "@chakra-ui/react";
-import CreateNewModal from "./CreateNewModal";
+import CreateNewModal from "../UI/CreateNewModal";
 import { useDispatch } from "../../store/tasks-context";
 
 function CreateNewButton({ data }) {

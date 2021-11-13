@@ -1,10 +1,11 @@
 //imports
 import { useState, useRef } from "react";
-import { Flex, HStack, Text, Input, useOutsideClick } from "@chakra-ui/react";
+import { Flex, Input, useOutsideClick } from "@chakra-ui/react";
 //components
 import Modal from "../UI/Modal";
 import TagItem from "../tags/TagItem";
-import ColorItem from "../colors/ColorItem";
+import SearchCard from "../UI/SearchCard";
+import SearchItem from "../search/SearchItem";
 
 function EditTagModal({ isOpen, onClose, task, onSubmit, tagIds, allTags }) {
   const [isSearchBox, setSearchBox] = useState(false);
@@ -80,50 +81,27 @@ function EditTagModal({ isOpen, onClose, task, onSubmit, tagIds, allTags }) {
           onFocus={() => setSearchBox(true)}
         />
         {isSearchBox && (
-          <Flex
-            w="full"
-            flexDir="column"
-            maxH="44"
-            overflow="scroll"
-            sx={{
-              "&::-webkit-scrollbar": {
-                display: "none",
-              },
-              "&": {
-                "-ms-overflow-style": "none",
-                "scrollbar-width": "none",
-              },
-            }}
-            pos="absolute"
-            zIndex="10"
-            top="120%"
-            left="0"
-            bgColor="#453643"
-            className="search-box"
-          >
+          <SearchCard>
             {Object.keys(allTags).map((id) => {
               const tag = allTags[id];
               if (
                 tag.type < 0 ||
                 selectedTags.includes(id) ||
-                (searchResult && tag.title.search(searchResult) < 0)
+                (searchResult &&
+                  tag.title.toLowerCase().indexOf(searchResult.toLowerCase()) <
+                    0)
               )
                 return;
               return (
-                <HStack
+                <SearchItem
                   key={tag.id}
-                  cursor="pointer"
+                  color={tag.color}
+                  title={tag.title}
                   onClick={() => onAddTag(tag)}
-                  px="4"
-                  py="2"
-                  _hover={{ bgColor: "whiteAlpha.200" }}
-                >
-                  <ColorItem color={tag.color} />
-                  <Text>{tag.title}</Text>
-                </HStack>
+                />
               );
             })}
-          </Flex>
+          </SearchCard>
         )}
       </Flex>
     </Modal>

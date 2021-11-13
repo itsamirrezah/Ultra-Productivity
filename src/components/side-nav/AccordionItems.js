@@ -1,6 +1,6 @@
 //imports
 import { Accordion, AccordionPanel } from "@chakra-ui/react";
-import CreateNewButton from "../UI/CreateNewButton";
+import CreateNewButton from "./CreateNewButton";
 import AccordionItem from "./AccordionItem";
 //components
 import AccordionSection from "./AccordionSection";

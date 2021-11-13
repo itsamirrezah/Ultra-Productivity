@@ -16,10 +16,10 @@ import {
   TASK_SET_TITLE,
 } from "./actions";
 //model
-import Task from "../model/Task";
+import Task from "../models/Task";
 import { removeItem } from "../utils/utils";
-import Project from "../model/Project";
-import Tag from "../model/Tag";
+import Project from "../models/Project";
+import Tag from "../models/Tag";
 
 export default function reducer(state, action) {
   const projects = state.projects;

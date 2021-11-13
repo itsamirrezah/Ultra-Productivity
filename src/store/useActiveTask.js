@@ -1,7 +1,7 @@
 //imports
 import { useState, useEffect } from "react";
 //model
-import ActiveTask from "../model/ActiveTask";
+import ActiveTask from "../models/ActiveTask";
 //data
 import { useDispatch } from "./tasks-context";
 //actions

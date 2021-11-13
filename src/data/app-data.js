@@ -1,10 +1,10 @@
 //utils
 import { removeItem } from "../utils/utils";
 //models
-import Project from "../model/Project";
-import Tag from "../model/Tag";
-import Task from "../model/Task";
-import ActiveTask from "../model/ActiveTask";
+import Project from "../models/Project";
+import Tag from "../models/Tag";
+import Task from "../models/Task";
+import ActiveTask from "../models/ActiveTask";
 
 let projects = {};
 let tags = {};
