@@ -1,6 +1,7 @@
 //imports
 import { useState, useRef } from "react";
 import { Flex, Input, useOutsideClick } from "@chakra-ui/react";
+import { FaHashtag } from "react-icons/fa";
 //components
 import Modal from "../UI/Modal";
 import TagItem from "../tags/TagItem";
@@ -95,6 +96,7 @@ function EditTagModal({ isOpen, onClose, task, onSubmit, tagIds, allTags }) {
               return (
                 <SearchItem
                   key={tag.id}
+                  icon={FaHashtag}
                   color={tag.color}
                   title={tag.title}
                   onClick={() => onAddTag(tag)}

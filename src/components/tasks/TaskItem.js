@@ -34,7 +34,7 @@ import {
 } from "../../store/actions";
 import { useState } from "react";
 
-function TaskItem({ task, props, onOpenTag }) {
+function TaskItem({ task, props, onOpenTag, handleDrag }) {
   const { id, title, isDone, tags, parentId } = task;
   const [input, setInput] = useState(title);
   const { activeTask, play, pause, dispatch } = useActiveTask({ task: task });
@@ -182,9 +182,9 @@ function TaskItem({ task, props, onOpenTag }) {
       </Flex>
 
       <HStack spacing="4" px="4" opacity={isDone ? 0.3 : 1}>
-        <Box ms="2" cursor="grab">
+        <Box ms="2" pos="relative" zIndex="10" {...handleDrag}>
           {isActive && <Icon as={FaPlay} fill="red.500" />}
-          {!isActive && <Icon as={FaGripLines} fill="grey" cursor="grab" />}
+          {!isActive && <Icon as={FaGripLines} fill="grey" />}
         </Box>
         <Flex w="full" flexDir="column">
           <Input

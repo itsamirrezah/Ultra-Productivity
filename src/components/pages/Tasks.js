@@ -9,7 +9,14 @@ import CreateNewModal from "../UI/CreateNewModal";
 import SearchTaskModal from "../search/SearchTaskModal";
 //data & actions
 import useTasks, { useDispatch } from "../../store/tasks-context";
-import { addTask, editProject, editTag, addTaskTag } from "../../store/actions";
+import {
+  addTask,
+  editProject,
+  editTag,
+  addTaskTag,
+  reorderTasks,
+} from "../../store/actions";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
 function Tasks() {
   const {
@@ -73,6 +80,19 @@ function Tasks() {
     dispatch(addTaskTag({ id, tagIds }));
   }
 
+  function onDragEnd(result) {
+    const { destination, source } = result;
+    if (!destination || !source) return;
+
+    if (
+      destination.index === source.index &&
+      destination.droppableId === source.droppableId
+    )
+      return;
+
+    dispatch(reorderTasks({ id, start: source.index, end: destination.index }));
+  }
+
   return (
     <>
       <VStack
@@ -97,16 +117,30 @@ function Tasks() {
           {/* working status */}
           <Box>Working: 2h 3m</Box>
           {/* taskItems */}
-          {filteredTasks.map((task) => {
-            return (
-              <TaskItems
-                key={task.id}
-                task={task}
-                allTags={data.tags}
-                onAddTags={onAddTaskTagHandler}
-              />
-            );
-          })}
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId="droppable-task">
+              {(provided) => (
+                <VStack
+                  w="full"
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                >
+                  {filteredTasks.map((task, index) => {
+                    return (
+                      <TaskItems
+                        key={task.id}
+                        task={task}
+                        allTags={data.tags}
+                        onAddTags={onAddTaskTagHandler}
+                        index={index}
+                      />
+                    );
+                  })}
+                  {provided.placeholder}
+                </VStack>
+              )}
+            </Droppable>
+          </DragDropContext>
         </VStack>
       </VStack>
       <NavDrawer isOpen={isNavOpen} onClose={onCloseNav} />

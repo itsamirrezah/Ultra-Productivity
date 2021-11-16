@@ -14,12 +14,16 @@ import {
   TASK_ADD_DAY,
   TASK_REMOVE_DAY,
   TASK_SET_TITLE,
+  REORDER_TASKS,
+  reorderTasks,
+  REORDER_SUBTASKS,
 } from "./actions";
 //model
 import Task from "../models/Task";
-import { removeItem } from "../utils/utils";
+import { removeItem, reorder } from "../utils/utils";
 import Project from "../models/Project";
 import Tag from "../models/Tag";
+import { act } from "react-dom/test-utils";
 
 export default function reducer(state, action) {
   const projects = state.projects;
@@ -264,6 +268,45 @@ export default function reducer(state, action) {
     return {
       ...state,
       tags: { ...tags, [id]: { ...tags[id], title, color } },
+    };
+  }
+
+  if (action.type === REORDER_TASKS) {
+    const { id, start, end } = action.payload;
+
+    if (projects[id]) {
+      const item = projects[id];
+      return {
+        ...state,
+        projects: {
+          ...projects,
+          [id]: { ...item, taskIds: reorder(item.taskIds, start, end) },
+        },
+      };
+    } else if (tags[id]) {
+      const item = tags[id];
+      return {
+        ...state,
+        tags: {
+          ...tags,
+          [id]: { ...item, taskIds: reorder(item.taskIds, start, end) },
+        },
+      };
+    }
+  }
+
+  if (action.type === REORDER_SUBTASKS) {
+    const { id, start, end } = action.payload;
+
+    return {
+      ...state,
+      tasks: {
+        ...tasks,
+        [id]: {
+          ...tasks[id],
+          subTaskIds: reorder(tasks[id].subTaskIds, start, end),
+        },
+      },
     };
   }
   return state;

@@ -4,22 +4,34 @@ import { VStack, useDisclosure } from "@chakra-ui/react";
 import TaskItem from "./TaskItem";
 import EditTagModal from "./EditTagModal";
 import SubtaskItems from "./SubtaskItems";
+import { Draggable } from "react-beautiful-dnd";
 
-function TaskItems({ task, allTags, onAddTags }) {
+function TaskItems({ task, allTags, onAddTags, index }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
-      <VStack
-        key={task.id}
-        w="full"
-        rounded="lg"
-        spacing="0.5"
-        bgColor="blackAlpha.600"
-        maxW="4xl"
-      >
-        <TaskItem task={task} props={{ py: "2" }} onOpenTag={onOpen} />
-        {task.subtasks.length > 0 && <SubtaskItems items={task.subtasks} />}
-      </VStack>
+      <Draggable draggableId={task.id} index={index}>
+        {(provided) => (
+          <VStack
+            key={task.id}
+            w="full"
+            rounded="lg"
+            spacing="0.5"
+            bgColor="blackAlpha.600"
+            maxW="4xl"
+            {...provided.draggableProps}
+            ref={provided.innerRef}
+          >
+            <TaskItem
+              task={task}
+              props={{ py: "2" }}
+              onOpenTag={onOpen}
+              handleDrag={provided.dragHandleProps}
+            />
+            {task.subtasks.length > 0 && <SubtaskItems items={task.subtasks} />}
+          </VStack>
+        )}
+      </Draggable>
       {isOpen && (
         <EditTagModal
           isOpen={isOpen}

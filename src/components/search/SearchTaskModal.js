@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import Modal from "../UI/Modal";
 import SearchCard from "../UI/SearchCard";
 import SearchItem from "./SearchItem";
+import { FaListUl, FaHashtag } from "react-icons/fa";
 
 function SearchTaskModal({ isOpen, onClose, data }) {
   const [isSearchBox, setSearchBox] = useState(false);
@@ -65,6 +66,11 @@ function SearchTaskModal({ isOpen, onClose, data }) {
                   key={task.id}
                 >
                   <SearchItem
+                    icon={
+                      projectOrTag._.toLowerCase() === "project"
+                        ? FaListUl
+                        : FaHashtag
+                    }
                     color={projectOrTag.color}
                     title={task.title}
                     onClick={onItemSelected}

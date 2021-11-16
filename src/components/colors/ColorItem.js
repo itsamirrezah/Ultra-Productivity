@@ -1,7 +1,8 @@
 import { Circle } from "@chakra-ui/react";
 import { FaCheck } from "react-icons/fa";
 
-function ColorItem({ color, isSelected, onClick }) {
+function ColorItem({ icon, color, isSelected, onClick }) {
+  const Icon = icon;
   return (
     <Circle
       size="25px"
@@ -9,7 +10,8 @@ function ColorItem({ color, isSelected, onClick }) {
       cursor="pointer"
       onClick={onClick ? onClick : null}
     >
-      {isSelected ? <FaCheck size="12" /> : null}
+      {isSelected && <FaCheck size="12" />}
+      {icon && <Icon size="12" />}
     </Circle>
   );
 }

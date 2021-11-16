@@ -12,6 +12,8 @@ export const TASK_ADD_TAG = "TASK_ADD_TAG";
 export const TASK_ADD_DAY = "TASK_ADD_DAY";
 export const TASK_REMOVE_DAY = "TASK_REMOVE_DAY";
 export const TASK_SET_TITLE = "TASK_SET_TITLE";
+export const REORDER_TASKS = "REORDER_TASKS";
+export const REORDER_SUBTASKS = "REORDER_SUBTASKS";
 
 export function setTaskDone({ id, isDone }) {
   return { type: TASK_DONE, payload: { id, isDone } };
@@ -67,4 +69,12 @@ export function removeTaskFromDay({ id }) {
 
 export function setTaskTitle({ id, title }) {
   return { type: TASK_SET_TITLE, payload: { id, title } };
+}
+
+export function reorderTasks({ id, start, end }) {
+  return { type: REORDER_TASKS, payload: { id, start, end } };
+}
+
+export function reorderSubtask({ id, start, end }) {
+  return { type: REORDER_SUBTASKS, payload: { id, start, end } };
 }
