@@ -28,7 +28,7 @@ function TaskItems({ task, allTags, onAddTags, index }) {
               onOpenTag={onOpen}
               handleDrag={provided.dragHandleProps}
             />
-            {task.subtasks.length > 0 && <SubtaskItems items={task.subtasks} />}
+            <SubtaskItems items={task.subtasks} parentId={task.id} />
           </VStack>
         )}
       </Draggable>

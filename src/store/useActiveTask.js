@@ -19,6 +19,7 @@ function unsetActiveTask() {
   localStorage.removeItem("ACTIVE_TASK");
   renderObservers(activeTask);
 }
+
 function setActiveTask(task) {
   activeTask = ActiveTask(task);
   localStorage.setItem("ACTIVE_TASK", JSON.stringify(activeTask));
@@ -70,7 +71,8 @@ export default function useActiveTask({ shouldObserve = false, task = null }) {
       cleanup(activeTask, task.parentId);
     }
     subscribe(task.id, task.parentId);
-    setActiveTask(task);
+    const { timeTracked: _, ...rest } = task;
+    setActiveTask(rest);
   }
 
   function pause() {

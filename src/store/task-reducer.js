@@ -156,7 +156,16 @@ export default function reducer(state, action) {
   }
 
   if (action.type === TASK_TRACKED) {
-    const { id, timeTracked } = action.payload;
+    const { id, parentId, timeTracked } = action.payload;
+
+    const parent = parentId
+      ? {
+          [parentId]: {
+            ...tasks[parentId],
+            timeTracked: tasks[parentId].timeTracked + timeTracked,
+          },
+        }
+      : {};
 
     return {
       ...state,
@@ -164,8 +173,9 @@ export default function reducer(state, action) {
         ...tasks,
         [id]: {
           ...tasks[id],
-          timeTracked: timeTracked,
+          timeTracked: tasks[id].timeTracked + timeTracked,
         },
+        ...parent,
       },
     };
   }
@@ -316,10 +326,14 @@ export default function reducer(state, action) {
         ...tasks,
         [sourceId]: {
           ...tasks[sourceId],
+          timeTracked:
+            tasks[sourceId].timeTracked - tasks[subtaskId].timeTracked,
           subTaskIds: source,
         },
         [destinationId]: {
           ...tasks[destinationId],
+          timeTracked:
+            tasks[destinationId].timeTracked + tasks[subtaskId].timeTracked,
           subTaskIds: destination,
         },
         [subtaskId]: { ...tasks[subtaskId], parentId: destinationId },

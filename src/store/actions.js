@@ -35,8 +35,8 @@ export function removeSubtask({ id, parentId }) {
   return { type: SUBTASK_REMOVE, payload: { id, parentId } };
 }
 
-export function setTaskTracked({ id, timeTracked }) {
-  return { type: TASK_TRACKED, payload: { id, timeTracked } };
+export function setTaskTracked({ id, parentId, timeTracked }) {
+  return { type: TASK_TRACKED, payload: { id, parentId, timeTracked } };
 }
 
 export function addProject({ title, color }) {

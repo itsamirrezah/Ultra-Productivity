@@ -48,6 +48,7 @@ function generateTasks() {
     const t = Task({
       title: `task-${i + 1}`,
       isDone: !Math.floor(Math.random() * 2),
+      timeTracked: Math.floor(Math.random() * 100000000),
     });
     tasks = { ...tasks, [t.id]: t };
   }

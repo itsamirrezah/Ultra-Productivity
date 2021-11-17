@@ -9,12 +9,13 @@ export default function ({
   title,
   isDone,
   subTaskIds,
+  timeTracked,
 }) {
   return {
     id: id ? id : uuid(),
     title: title ? title : "",
     isDone: isDone ? isDone : false,
-    timeTracked: 0,
+    timeTracked: timeTracked ? timeTracked : 0,
     parentId: parentId ? parentId : null,
     projectId: projectId ? projectId : null,
     subTaskIds: subTaskIds ? subTaskIds : [],

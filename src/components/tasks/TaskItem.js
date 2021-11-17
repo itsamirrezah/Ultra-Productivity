@@ -1,4 +1,5 @@
 //imports
+import { useState } from "react";
 import {
   HStack,
   Flex,
@@ -32,14 +33,19 @@ import {
   removeTaskFromDay,
   setTaskTitle,
 } from "../../store/actions";
-import { useState } from "react";
+import { relativeTime } from "../../utils/utils";
 
 function TaskItem({ task, props, onOpenTag, handleDrag }) {
   const { id, title, isDone, tags, parentId } = task;
   const [input, setInput] = useState(title);
   const { activeTask, play, pause, dispatch } = useActiveTask({ task: task });
-  const isActive = activeTask.id === task.id;
+  const isActive =
+    activeTask.id === task.id || task.subTaskIds.includes(activeTask.id);
   const isToday = task.tagIds.includes("today");
+  const timeTracked = isActive
+    ? activeTask.timeTracked + task.timeTracked
+    : task.timeTracked;
+  const timeTrackedStr = relativeTime(timeTracked);
 
   function setTitleHandler() {
     if (title !== input) dispatch(setTaskTitle({ id, title: input }));
@@ -215,6 +221,9 @@ function TaskItem({ task, props, onOpenTag, handleDrag }) {
             </Flex>
           )}
         </Flex>
+        <Box flexShrink="0" fontSize="sm">
+          {timeTracked ? timeTrackedStr : "-"}
+        </Box>
       </HStack>
     </Box>
   );

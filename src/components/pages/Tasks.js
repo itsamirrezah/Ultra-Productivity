@@ -18,6 +18,8 @@ import {
   reorderSubtasks,
 } from "../../store/actions";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import Status from "../tasks/Status";
+import { relativeTime } from "../../utils/utils";
 
 function Tasks() {
   const {
@@ -49,6 +51,11 @@ function Tasks() {
     task.tags = task.tagIds.map((tagId) => data.tags[tagId]);
     return task;
   });
+
+  const workTimes = filteredTasks.reduce(
+    (total, task) => total + task.timeTracked,
+    0
+  );
 
   function getAvailableTask() {
     for (let i = 0; i < filteredTasks.length; i++) {
@@ -128,7 +135,7 @@ function Tasks() {
         />
         <VStack w="full" spacing="1">
           {/* working status */}
-          <Box>Working: 2h 3m</Box>
+          <Status time={relativeTime(workTimes)} />
           {/* taskItems */}
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="droppable-task" type="task">

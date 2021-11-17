@@ -1,28 +1,55 @@
 //imports
-import { VStack, IconButton, Collapse, Box } from "@chakra-ui/react";
+import {
+  VStack,
+  IconButton,
+  Collapse,
+  Box,
+  Text,
+  HStack,
+  Icon,
+} from "@chakra-ui/react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { useState } from "react";
-import { FaMinus, FaPlus } from "react-icons/fa";
+import { FaMinus, FaPlus, FaAngleDown } from "react-icons/fa";
 //components
 import TaskItem from "./TaskItem";
 
-function SubtaskItems({ items }) {
+function SubtaskItems({ items, parentId }) {
   const [isCollapse, setCollapse] = useState(false);
+
+  const doneTasks = items.filter((subtask) => subtask.isDone);
 
   return (
     <Box pos="relative" w="95%" alignSelf="flex-end" pt="4" pb="2">
-      <IconButton
-        onClick={() => setCollapse((state) => !state)}
-        size="xs"
-        rounded="lg"
-        pos="absolute"
-        right="100%"
-        top="50%"
-        transform="translateY(-50%)"
-        icon={isCollapse ? <FaPlus /> : <FaMinus />}
-      />
+      {doneTasks.length > 0 && !isCollapse && (
+        <IconButton
+          onClick={() => setCollapse((state) => !state)}
+          size="xs"
+          rounded="lg"
+          pos="absolute"
+          right="100%"
+          top="50%"
+          zIndex="10"
+          transform="translateX(50%)"
+          icon={isCollapse ? <FaPlus /> : <FaMinus />}
+        />
+      )}
+      {isCollapse && (
+        <HStack
+          cursor="pointer"
+          w="full"
+          justifyContent="center"
+          onClick={() => setCollapse((state) => !state)}
+        >
+          <Text
+            textTransform="uppercase"
+            fontSize="md"
+          >{`+${doneTasks.length} Done Tasks`}</Text>
+          <Icon as={FaAngleDown} />
+        </HStack>
+      )}
 
-      <Droppable droppableId={items[0].parentId} type="subtask">
+      <Droppable droppableId={parentId} type="subtask">
         {(provided) => (
           <VStack
             spacing="0.5"

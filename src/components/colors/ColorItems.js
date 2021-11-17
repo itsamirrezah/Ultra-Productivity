@@ -1,5 +1,6 @@
 //imports
 import { HStack } from "@chakra-ui/react";
+import { FaCheck } from "react-icons/fa";
 import ColorItem from "./ColorItem";
 //components
 
@@ -13,7 +14,7 @@ function ColorItems({ items, currentColor, setColor }) {
           <ColorItem
             key={id}
             color={color}
-            isSelected={isSelected}
+            icon={isSelected ? FaCheck : null}
             onClick={() => setColor(color)}
           />
         );
