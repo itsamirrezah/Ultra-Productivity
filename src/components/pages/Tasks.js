@@ -15,6 +15,7 @@ import {
   editTag,
   addTaskTag,
   reorderTasks,
+  reorderSubtasks,
 } from "../../store/actions";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
@@ -81,7 +82,7 @@ function Tasks() {
   }
 
   function onDragEnd(result) {
-    const { destination, source } = result;
+    const { destination, source, type } = result;
     if (!destination || !source) return;
 
     if (
@@ -90,7 +91,19 @@ function Tasks() {
     )
       return;
 
-    dispatch(reorderTasks({ id, start: source.index, end: destination.index }));
+    if (type === "task")
+      dispatch(
+        reorderTasks({ id, start: source.index, end: destination.index })
+      );
+    else if (type === "subtask")
+      dispatch(
+        reorderSubtasks({
+          sourceId: source.droppableId,
+          destinationId: destination.droppableId,
+          start: source.index,
+          end: destination.index,
+        })
+      );
   }
 
   return (
@@ -118,7 +131,7 @@ function Tasks() {
           <Box>Working: 2h 3m</Box>
           {/* taskItems */}
           <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="droppable-task">
+            <Droppable droppableId="droppable-task" type="task">
               {(provided) => (
                 <VStack
                   w="full"

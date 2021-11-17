@@ -4,9 +4,12 @@ export function removeItem(obj, key) {
   return remain;
 }
 
-export function reorder(list, start, end) {
-  const mutableList = Array.from(list);
-  const [reorder] = mutableList.splice(start, 1);
-  mutableList.splice(end, 0, reorder);
-  return mutableList;
+export function reorder(source, destination = null, start, end) {
+  const mutableSource = Array.from(source);
+  const mutableDestination = destination
+    ? Array.from(destination)
+    : mutableSource;
+  const [reorder] = mutableSource.splice(start, 1);
+  mutableDestination.splice(end, 0, reorder);
+  return { source: mutableSource, destination: mutableDestination };
 }

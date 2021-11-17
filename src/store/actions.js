@@ -75,6 +75,9 @@ export function reorderTasks({ id, start, end }) {
   return { type: REORDER_TASKS, payload: { id, start, end } };
 }
 
-export function reorderSubtask({ id, start, end }) {
-  return { type: REORDER_SUBTASKS, payload: { id, start, end } };
+export function reorderSubtasks({ sourceId, destinationId, start, end }) {
+  return {
+    type: REORDER_SUBTASKS,
+    payload: { sourceId, destinationId, start, end },
+  };
 }

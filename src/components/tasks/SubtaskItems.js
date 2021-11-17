@@ -1,6 +1,6 @@
 //imports
 import { VStack, IconButton, Collapse, Box } from "@chakra-ui/react";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { Draggable, Droppable } from "react-beautiful-dnd";
 import { useState } from "react";
 import { FaMinus, FaPlus } from "react-icons/fa";
 //components
@@ -22,50 +22,47 @@ function SubtaskItems({ items }) {
         icon={isCollapse ? <FaPlus /> : <FaMinus />}
       />
 
-      <DragDropContext onDragEnd={() => {}}>
-        <Droppable droppableId="subtask-droppable">
-          {(provided) => (
-            <VStack
-              spacing="0.5"
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-            >
-              {items &&
-                items.map((subtask, index) => (
-                  <Draggable
-                    key={subtask.id}
-                    draggableId={subtask.id + "12"}
-                    index={index}
-                  >
+      <Droppable droppableId={items[0].parentId} type="subtask">
+        {(provided) => (
+          <VStack
+            spacing="0.5"
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+          >
+            {items &&
+              items.map((subtask, index) => (
+                <Collapse
+                  key={subtask.id}
+                  in={isCollapse ? !subtask.isDone : true}
+                  style={{ width: "100%" }}
+                >
+                  <Draggable draggableId={subtask.id} index={index}>
                     {(provided) => (
                       <Box
                         w="full"
+                        m="0"
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                       >
-                        <Collapse
-                          in={isCollapse ? !subtask.isDone : true}
-                          style={{ width: "100%" }}
-                        >
-                          <TaskItem
-                            task={subtask}
-                            props={{
-                              // alignSelf: "flex-end",
-                              bgColor: "whiteAlpha.200",
-                              py: "1",
-                            }}
-                            handleDrag={provided.dragHandleProps}
-                          />
-                        </Collapse>
+                        <TaskItem
+                          task={subtask}
+                          props={{
+                            alignSelf: "flex-end",
+                            bgColor: "whiteAlpha.200",
+                            py: "1",
+                            mt: "0",
+                          }}
+                          handleDrag={provided.dragHandleProps}
+                        />
                       </Box>
                     )}
                   </Draggable>
-                ))}
-              {provided.placeholder}
-            </VStack>
-          )}
-        </Droppable>
-      </DragDropContext>
+                </Collapse>
+              ))}
+            {provided.placeholder}
+          </VStack>
+        )}
+      </Droppable>
     </Box>
   );
 }

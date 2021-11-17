@@ -15,15 +15,13 @@ import {
   TASK_REMOVE_DAY,
   TASK_SET_TITLE,
   REORDER_TASKS,
-  reorderTasks,
   REORDER_SUBTASKS,
 } from "./actions";
+import { removeItem, reorder } from "../utils/utils";
 //model
 import Task from "../models/Task";
-import { removeItem, reorder } from "../utils/utils";
 import Project from "../models/Project";
 import Tag from "../models/Tag";
-import { act } from "react-dom/test-utils";
 
 export default function reducer(state, action) {
   const projects = state.projects;
@@ -276,36 +274,55 @@ export default function reducer(state, action) {
 
     if (projects[id]) {
       const item = projects[id];
+      const { source } = reorder(item.taskIds, null, start, end);
       return {
         ...state,
         projects: {
           ...projects,
-          [id]: { ...item, taskIds: reorder(item.taskIds, start, end) },
+          [id]: { ...item, taskIds: source },
         },
       };
     } else if (tags[id]) {
       const item = tags[id];
+      const { source } = reorder(item.taskIds, null, start, end);
       return {
         ...state,
         tags: {
           ...tags,
-          [id]: { ...item, taskIds: reorder(item.taskIds, start, end) },
+          [id]: { ...item, taskIds: source },
         },
       };
     }
   }
 
   if (action.type === REORDER_SUBTASKS) {
-    const { id, start, end } = action.payload;
+    const { sourceId, destinationId, start, end } = action.payload;
+
+    const { source, destination } =
+      sourceId === destinationId
+        ? reorder(tasks[sourceId].subTaskIds, null, start, end)
+        : reorder(
+            tasks[sourceId].subTaskIds,
+            tasks[destinationId].subTaskIds,
+            start,
+            end
+          );
+
+    const subtaskId = tasks[sourceId].subTaskIds[start];
 
     return {
       ...state,
       tasks: {
         ...tasks,
-        [id]: {
-          ...tasks[id],
-          subTaskIds: reorder(tasks[id].subTaskIds, start, end),
+        [sourceId]: {
+          ...tasks[sourceId],
+          subTaskIds: source,
         },
+        [destinationId]: {
+          ...tasks[destinationId],
+          subTaskIds: destination,
+        },
+        [subtaskId]: { ...tasks[subtaskId], parentId: destinationId },
       },
     };
   }
