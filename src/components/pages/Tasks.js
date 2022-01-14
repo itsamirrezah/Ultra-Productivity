@@ -1,8 +1,7 @@
 //imports
 import { useLocation } from "react-router-dom";
-import { VStack, Box, useDisclosure } from "@chakra-ui/react";
+import { VStack, Box, useDisclosure, Flex } from "@chakra-ui/react";
 //components
-import TaskItems from "../tasks/TaskItems";
 import Header from "../tasks/Header";
 import NavDrawer from "../side-nav/NavDrawer";
 import CreateNewModal from "../UI/CreateNewModal";
@@ -20,6 +19,7 @@ import {
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import Status from "../tasks/Status";
 import { relativeTime } from "../../utils/utils";
+import TaskList from "../new-task/TaskList";
 
 function Tasks() {
   const {
@@ -84,9 +84,7 @@ function Tasks() {
     dispatch(action);
   }
 
-  function onAddTaskTagHandler(id, tagIds) {
-    dispatch(addTaskTag({ id, tagIds }));
-  }
+  function onAddTaskTagHandler(id, tagIds) {}
 
   function onDragEnd(result) {
     const { destination, source, type } = result;
@@ -145,9 +143,23 @@ function Tasks() {
                   {...provided.droppableProps}
                   ref={provided.innerRef}
                 >
+                  <TaskList tasks={filteredTasks} type="task" />
+                  {provided.placeholder}
+                </VStack>
+              )}
+            </Droppable>
+          </DragDropContext>
+          {/* <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId="droppable-task" type="task">
+              {(provided) => (
+                <VStack
+                  w="full"
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                >
                   {filteredTasks.map((task, index) => {
                     return (
-                      <TaskItems
+                      <TaskList
                         key={task.id}
                         task={task}
                         allTags={data.tags}
@@ -160,7 +172,7 @@ function Tasks() {
                 </VStack>
               )}
             </Droppable>
-          </DragDropContext>
+          </DragDropContext> */}
         </VStack>
       </VStack>
       <NavDrawer isOpen={isNavOpen} onClose={onCloseNav} />

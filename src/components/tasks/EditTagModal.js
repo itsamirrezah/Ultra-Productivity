@@ -7,11 +7,13 @@ import Modal from "../UI/Modal";
 import TagItem from "../tags/TagItem";
 import SearchCard from "../UI/SearchCard";
 import SearchItem from "../search/SearchItem";
+import useTasks from "../../store/tasks-context";
 
-function EditTagModal({ isOpen, onClose, task, onSubmit, tagIds, allTags }) {
+function EditTagModal({ isOpen, onClose, task, onSubmit, tagIds }) {
   const [isSearchBox, setSearchBox] = useState(false);
   const [selectedTags, setSelectedTags] = useState(tagIds);
   const [searchResult, setSearchResult] = useState(null);
+  const data = useTasks();
   const ref = useRef();
 
   useOutsideClick({
@@ -61,7 +63,7 @@ function EditTagModal({ isOpen, onClose, task, onSubmit, tagIds, allTags }) {
         borderBottom="2px solid gray"
       >
         {selectedTags.map((tagId) => {
-          const tag = allTags[tagId];
+          const tag = data.tags[tagId];
           if (tag.type < 0) return;
           return (
             <TagItem
@@ -83,8 +85,8 @@ function EditTagModal({ isOpen, onClose, task, onSubmit, tagIds, allTags }) {
         />
         {isSearchBox && (
           <SearchCard>
-            {Object.keys(allTags).map((id) => {
-              const tag = allTags[id];
+            {Object.keys(data.tags).map((id) => {
+              const tag = data.tags[id];
               if (
                 tag.type < 0 ||
                 selectedTags.includes(id) ||
