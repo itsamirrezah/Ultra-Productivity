@@ -38,11 +38,11 @@ import {
 import { relativeTime } from "../../utils/utils";
 import EditTagModal from "./EditTagModal";
 
-function TaskItem({ task, props, onOpenTag, handleDrag }) {
+function TaskItem({ task, props, handleDrag }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { id, title, isDone, tags, parentId } = task;
-  const [input, setInput] = useState(title);
+  const [input, setInput] = useState("");
   const { activeTask, play, pause, dispatch } = useActiveTask({ task: task });
   const isActive =
     activeTask.id === task.id || task.subTaskIds.includes(activeTask.id);
@@ -201,7 +201,7 @@ function TaskItem({ task, props, onOpenTag, handleDrag }) {
           <Flex w="full" flexDir="column">
             <Input
               w="full"
-              value={input}
+              value={input || title}
               onChange={(e) => setInput(e.target.value)}
               onBlur={setTitleHandler}
               px="3"
@@ -232,15 +232,12 @@ function TaskItem({ task, props, onOpenTag, handleDrag }) {
           </Box>
         </HStack>
       </Box>
-      {isOpen && (
-        <EditTagModal
-          isOpen={isOpen}
-          onClose={onClose}
-          tagIds={task.tagIds}
-          task={task}
-          onSubmit={(tagIds) => dispatch(addTaskTag({ id: task.id, tagIds }))}
-        />
-      )}
+      <EditTagModal
+        isOpen={isOpen}
+        onClose={onClose}
+        task={task}
+        onSubmit={(tagIds) => dispatch(addTaskTag({ id: task.id, tagIds }))}
+      />
     </>
   );
 }

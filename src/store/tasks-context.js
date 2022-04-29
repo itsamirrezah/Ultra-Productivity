@@ -6,7 +6,7 @@ import appData from "../data/app-data";
 
 //contexts
 const defaultTasks = {};
-const TasksContext = createContext(defaultTasks);
+const TasksContext = createContext();
 const DispatchContext = createContext();
 // reducer
 import reducer from "./task-reducer";

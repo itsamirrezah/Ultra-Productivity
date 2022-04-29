@@ -3,13 +3,14 @@ import { HStack } from "@chakra-ui/react";
 import { FaCheck } from "react-icons/fa";
 import ColorItem from "./ColorItem";
 //components
+import { colors } from "../../data/app-data";
 
-function ColorItems({ items, currentColor, setColor }) {
+function ColorItems({ currentColor, setColor }) {
   return (
     <HStack spacing="2">
-      {Object.keys(items).map((id) => {
-        const color = items[id];
-        const isSelected = currentColor ? color === currentColor : 0;
+      {Object.keys(colors).map((id) => {
+        const color = colors[id];
+        const isSelected = color === currentColor ? true : false;
         return (
           <ColorItem
             key={id}

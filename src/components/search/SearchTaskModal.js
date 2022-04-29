@@ -12,13 +12,19 @@ import SearchItem from "./SearchItem";
 import { FaListUl, FaHashtag } from "react-icons/fa";
 
 function SearchTaskModal({ isOpen, onClose, data }) {
-  const [isSearchBox, setSearchBox] = useState(false);
-  const [searchResult, setSearchResult] = useState(null);
+  const [isSearchShown, setSearchShown] = useState(false);
+  const [searchResult, setSearchResult] = useState("");
   const ref = useRef();
+
+  console.log({ data });
 
   useOutsideClick({
     ref: ref,
-    handler: () => setSearchBox(false),
+    handler: () => {
+      setSearchShown(false);
+      setSearchResult("");
+      onClose();
+    },
   });
 
   function search(e) {
@@ -40,10 +46,10 @@ function SearchTaskModal({ isOpen, onClose, data }) {
           onChange={search}
           borderBottom="2px solid gray"
           value={searchResult}
-          onFocus={() => setSearchBox(true)}
+          onFocus={() => setSearchShown(true)}
         />
 
-        {isSearchBox && (
+        {isSearchShown && (
           <SearchCard>
             {Object.keys(data.tasks).map((id) => {
               const task = data.tasks[id];

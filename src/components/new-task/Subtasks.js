@@ -10,7 +10,11 @@ export default function Subtasks({
   droppablePlaceHolder,
 }) {
   const [isCollapsedMode, setCollapseMode] = useState(false);
-  const doneTasks = subtasks.filter((subtask) => subtask.isDone);
+  const uiTasks = isCollapsedMode
+    ? subtasks.filter((subtask) => !subtask.isDone)
+    : subtasks;
+
+  const hiddenBtnShown = uiTasks.find((t) => t.isDone);
 
   return (
     <VStack
@@ -23,7 +27,7 @@ export default function Subtasks({
       {...droppableProps}
       ref={innerRef}
     >
-      {doneTasks.length > 0 && !isCollapsedMode && (
+      {hiddenBtnShown && (
         <IconButton
           onClick={() => setCollapseMode((state) => !state)}
           size="xs"
@@ -43,15 +47,14 @@ export default function Subtasks({
           justifyContent="center"
           onClick={() => setCollapseMode((state) => !state)}
         >
-          <Text
-            textTransform="uppercase"
-            fontSize="md"
-          >{`+${doneTasks.length} Done Tasks`}</Text>
+          <Text textTransform="uppercase" fontSize="md">{`+${
+            subtasks.length - uiTasks.length
+          } Done Tasks`}</Text>
           <Icon as={FaAngleDown} />
         </HStack>
       )}
 
-      <TaskList tasks={subtasks} type="subtask" />
+      <TaskList tasks={uiTasks} type="subtask" />
       {droppablePlaceHolder}
     </VStack>
   );

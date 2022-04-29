@@ -9,10 +9,10 @@ import SearchCard from "../UI/SearchCard";
 import SearchItem from "../search/SearchItem";
 import useTasks from "../../store/tasks-context";
 
-function EditTagModal({ isOpen, onClose, task, onSubmit, tagIds }) {
+function EditTagModal({ isOpen, onClose, task, onSubmit }) {
   const [isSearchBox, setSearchBox] = useState(false);
-  const [selectedTags, setSelectedTags] = useState(tagIds);
-  const [searchResult, setSearchResult] = useState(null);
+  const [selectedTags, setSelectedTags] = useState(task.tagIds);
+  const [searchResult, setSearchResult] = useState("");
   const data = useTasks();
   const ref = useRef();
 

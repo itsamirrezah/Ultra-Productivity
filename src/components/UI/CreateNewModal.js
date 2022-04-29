@@ -11,7 +11,6 @@ import {
 //components
 import Modal from "./Modal";
 //data
-import { colors } from "../../data/app-data";
 import ColorItems from "../colors/ColorItems";
 
 function CreateNewModal({
@@ -20,15 +19,16 @@ function CreateNewModal({
   header,
   type,
   color,
-  title,
+  title = "",
   onSubmit,
 }) {
-  const [selectedColor, setColor] = useState(color ? color : null);
-  const [input, setInput] = useState(title ? title : null);
+  const [selectedColor, setColor] = useState(null);
+  const [input, setInput] = useState("");
 
   function onSubmitHandler() {
     const payload = { title: input, color: selectedColor };
     onSubmit(payload);
+    setInput("");
     onClose();
   }
 
@@ -47,7 +47,7 @@ function CreateNewModal({
             <Input
               variant="filled"
               placeholder={`Input Your ${type} Name`}
-              value={input}
+              value={input || title}
               onChange={(e) => setInput(e.target.value)}
             />
             <Text fontSize="larger">{`${type}:`}</Text>
@@ -56,8 +56,7 @@ function CreateNewModal({
             <Text fontSize="larger">Color</Text>
             {/* colors */}
             <ColorItems
-              items={colors}
-              currentColor={selectedColor}
+              currentColor={selectedColor || color}
               setColor={setColor}
             />
           </HStack>

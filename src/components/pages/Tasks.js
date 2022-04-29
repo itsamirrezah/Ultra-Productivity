@@ -1,6 +1,6 @@
 //imports
 import { useLocation } from "react-router-dom";
-import { VStack, Box, useDisclosure, Flex } from "@chakra-ui/react";
+import { VStack, useDisclosure } from "@chakra-ui/react";
 //components
 import Header from "../tasks/Header";
 import NavDrawer from "../side-nav/NavDrawer";
@@ -12,11 +12,10 @@ import {
   addTask,
   editProject,
   editTag,
-  addTaskTag,
   reorderTasks,
   reorderSubtasks,
 } from "../../store/actions";
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { DragDropContext } from "react-beautiful-dnd";
 import Status from "../tasks/Status";
 import { relativeTime } from "../../utils/utils";
 import TaskList from "../new-task/TaskList";
@@ -84,8 +83,6 @@ function Tasks() {
     dispatch(action);
   }
 
-  function onAddTaskTagHandler(id, tagIds) {}
-
   function onDragEnd(result) {
     const { destination, source, type } = result;
     if (!destination || !source) return;
@@ -136,65 +133,27 @@ function Tasks() {
           <Status time={relativeTime(workTimes)} />
           {/* taskItems */}
           <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="droppable-task" type="task">
-              {(provided) => (
-                <VStack
-                  w="full"
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                >
-                  <TaskList tasks={filteredTasks} type="task" />
-                  {provided.placeholder}
-                </VStack>
-              )}
-            </Droppable>
+            <TaskList tasks={filteredTasks} type="task" />
           </DragDropContext>
-          {/* <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="droppable-task" type="task">
-              {(provided) => (
-                <VStack
-                  w="full"
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                >
-                  {filteredTasks.map((task, index) => {
-                    return (
-                      <TaskList
-                        key={task.id}
-                        task={task}
-                        allTags={data.tags}
-                        onAddTags={onAddTaskTagHandler}
-                        index={index}
-                      />
-                    );
-                  })}
-                  {provided.placeholder}
-                </VStack>
-              )}
-            </Droppable>
-          </DragDropContext> */}
         </VStack>
       </VStack>
       <NavDrawer isOpen={isNavOpen} onClose={onCloseNav} />
-      {isEditModalOpen && (
-        <CreateNewModal
-          header={`Edit ${section._}`}
-          isOpen={isEditModalOpen}
-          onClose={onCloseEditModal}
-          type={section._}
-          color={section.color}
-          title={section.title}
-          onSubmit={onEditSection}
-        />
-      )}
-
-      {isSearchModalOpen && (
-        <SearchTaskModal
-          data={data}
-          isOpen={isSearchModalOpen}
-          onClose={onCloseSearchModal}
-        />
-      )}
+      <CreateNewModal
+        header={`Edit ${section._}`}
+        isOpen={isEditModalOpen}
+        onClose={onCloseEditModal}
+        type={section._}
+        color={section.color}
+        title={section.title}
+        onSubmit={onEditSection}
+      />
+      )
+      <SearchTaskModal
+        data={data}
+        isOpen={isSearchModalOpen}
+        onClose={onCloseSearchModal}
+      />
+      )
     </>
   );
 }
