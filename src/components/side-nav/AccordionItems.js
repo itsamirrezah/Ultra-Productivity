@@ -26,6 +26,7 @@ function AccordionItems({ items, location }) {
                     color={item.color}
                     link={`${it.route}/${item.id}`}
                     isSelected={location === `${it.route}/${item.id}`}
+                    updatedAt={item.updatedAt}
                   />
                 );
               })}

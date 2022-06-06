@@ -4,13 +4,8 @@ import Logo from "../UI/Logo";
 //components
 import NavItems from "./NavItems";
 //data
-import useTasks from "../../store/tasks-context";
-import navigationData from "../../data/nav-data";
 
 function Navigation() {
-  const { projects, tags } = useTasks();
-  const items = navigationData({ projects, tags });
-
   return (
     <VStack
       width="full"
@@ -32,7 +27,7 @@ function Navigation() {
       {/* logo or something */}
       <Logo />
       {/* navigation items */}
-      <NavItems items={items} />
+      <NavItems />
     </VStack>
   );
 }

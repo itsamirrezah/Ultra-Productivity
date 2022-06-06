@@ -38,9 +38,23 @@ export default function reducer(state, action) {
 
   if (action.type === TASK_DONE) {
     const { id, isDone } = action.payload;
+    const parentId = tasks[id].parentId;
+    const parent = parentId
+      ? {
+          [parentId]: {
+            ...tasks[parentId],
+            updatedAt: new Date().getTime(),
+          },
+        }
+      : {};
+
     return {
       ...state,
-      tasks: { ...tasks, [id]: { ...tasks[id], isDone } },
+      tasks: {
+        ...tasks,
+        [id]: { ...tasks[id], isDone, updatedAt: new Date().getTime() },
+        ...parent,
+      },
     };
   }
 
@@ -54,6 +68,7 @@ export default function reducer(state, action) {
           [projectId]: {
             ...projects[projectId],
             taskIds: [...projects[projectId].taskIds, task.id],
+            updatedAt: new Date().getTime(),
           },
         }
       : projects;
@@ -64,6 +79,7 @@ export default function reducer(state, action) {
           [tagId]: {
             ...tags[tagId],
             taskIds: [...tags[tagId].taskIds, task.id],
+            updatedAt: new Date().getTime(),
           },
         }
       : tags;
@@ -91,6 +107,7 @@ export default function reducer(state, action) {
         [parentId]: {
           ...tasks[parentId],
           subTaskIds: [...tasks[parentId].subTaskIds, subtask.id],
+          updatedAt: new Date().getTime(),
         },
         [subtask.id]: subtask,
       },
@@ -114,6 +131,7 @@ export default function reducer(state, action) {
             taskIds: state.projects[task.projectId].taskIds.filter(
               (id) => id !== task.id
             ),
+            updatedAt: new Date().getTime(),
           },
         }
       : projects;
@@ -126,6 +144,7 @@ export default function reducer(state, action) {
         [tagId]: {
           ...updatedTags[tagId],
           taskIds: updatedTags[tagId].taskIds.filter((id) => id !== task.id),
+          updatedAt: new Date().getTime(),
         },
       };
     });
@@ -150,6 +169,7 @@ export default function reducer(state, action) {
           subTaskIds: updatedTasks[parentId].subTaskIds.filter(
             (subId) => subId !== id
           ),
+          updatedAt: new Date().getTime(),
         },
       },
     };
@@ -174,6 +194,7 @@ export default function reducer(state, action) {
         [id]: {
           ...tasks[id],
           timeTracked: tasks[id].timeTracked + timeTracked,
+          updatedAt: new Date().getTime(),
         },
         ...parent,
       },
@@ -209,7 +230,10 @@ export default function reducer(state, action) {
 
     return {
       ...state,
-      tasks: { ...tasks, [id]: { ...tasks[id], tagIds: tagIds } },
+      tasks: {
+        ...tasks,
+        [id]: { ...tasks[id], tagIds: tagIds, updatedAt: new Date().getTime() },
+      },
       tags: updatedTags,
     };
   }
@@ -220,11 +244,19 @@ export default function reducer(state, action) {
       ...state,
       tasks: {
         ...tasks,
-        [id]: { ...tasks[id], tagIds: [...tasks[id].tagIds, "today"] },
+        [id]: {
+          ...tasks[id],
+          tagIds: [...tasks[id].tagIds, "today"],
+          updatedAt: new Date().getTime(),
+        },
       },
       tags: {
         ...tags,
-        today: { ...tags.today, taskIds: [...tags.today.taskIds, id] },
+        today: {
+          ...tags.today,
+          taskIds: [...tags.today.taskIds, id],
+          updatedAt: new Date().getTime(),
+        },
       },
     };
   }
@@ -239,6 +271,7 @@ export default function reducer(state, action) {
         [id]: {
           ...tasks[id],
           tagIds: tasks[id].tagIds.filter((tId) => tId !== "today"),
+          updatedAt: new Date().getTime(),
         },
       },
       tags: {
@@ -246,6 +279,7 @@ export default function reducer(state, action) {
         today: {
           ...tags.today,
           taskIds: tags.today.taskIds.filter((tId) => tId !== id),
+          updatedAt: new Date().getTime(),
         },
       },
     };
@@ -261,7 +295,15 @@ export default function reducer(state, action) {
     const { id, title, color } = action.payload;
     return {
       ...state,
-      projects: { ...projects, [id]: { ...projects[id], title, color } },
+      projects: {
+        ...projects,
+        [id]: {
+          ...projects[id],
+          title,
+          color,
+          updatedAt: new Date().getTime(),
+        },
+      },
     };
   }
 
@@ -275,7 +317,10 @@ export default function reducer(state, action) {
     const { id, title, color } = action.payload;
     return {
       ...state,
-      tags: { ...tags, [id]: { ...tags[id], title, color } },
+      tags: {
+        ...tags,
+        [id]: { ...tags[id], title, color, updatedAt: new Date().getTime() },
+      },
     };
   }
 
@@ -329,14 +374,20 @@ export default function reducer(state, action) {
           timeTracked:
             tasks[sourceId].timeTracked - tasks[subtaskId].timeTracked,
           subTaskIds: source,
+          updatedAt: new Date().getTime(),
         },
         [destinationId]: {
           ...tasks[destinationId],
           timeTracked:
             tasks[destinationId].timeTracked + tasks[subtaskId].timeTracked,
           subTaskIds: destination,
+          updatedAt: new Date().getTime(),
         },
-        [subtaskId]: { ...tasks[subtaskId], parentId: destinationId },
+        [subtaskId]: {
+          ...tasks[subtaskId],
+          parentId: destinationId,
+          updatedAt: new Date().getTime(),
+        },
       },
     };
   }

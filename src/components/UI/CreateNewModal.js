@@ -26,7 +26,7 @@ function CreateNewModal({
   const [input, setInput] = useState("");
 
   function onSubmitHandler() {
-    const payload = { title: input, color: selectedColor };
+    const payload = { title: input || title, color: selectedColor };
     onSubmit(payload);
     setInput("");
     onClose();

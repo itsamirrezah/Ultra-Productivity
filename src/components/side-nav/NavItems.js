@@ -2,17 +2,19 @@
 import { VStack, Link as ChakraLink, Divider } from "@chakra-ui/react";
 import { Fragment } from "react";
 import { Link, useLocation } from "react-router-dom";
+import useTasks from "../../store/tasks-context";
 
 //components
 import AccordionItems from "./AccordionItems";
 import BasicItem from "./BasicItem";
 
-function NavItems({ items }) {
+function NavItems() {
+  const { navigation } = useTasks();
   const location = useLocation().pathname;
   return (
     <VStack w="full">
-      {items &&
-        items.map((item, idx) => {
+      {navigation &&
+        navigation.map((item, idx) => {
           if (item.type === 0) {
             //basic navigation item
             return (
@@ -29,7 +31,7 @@ function NavItems({ items }) {
                     isSelected={location === item.link}
                   />
                 </ChakraLink>
-                {items.length !== idx + 1 && <Divider />}
+                {navigation.length !== idx + 1 && <Divider />}
               </Fragment>
             );
           }
@@ -43,7 +45,7 @@ function NavItems({ items }) {
                   items={item.items}
                   location={location}
                 />
-                {items.length !== idx + 1 && <Divider />}
+                {navigation.length !== idx + 1 && <Divider />}
               </Fragment>
             );
           }

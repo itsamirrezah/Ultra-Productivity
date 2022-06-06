@@ -8,5 +8,6 @@ export default function ({ id, title, color, type, taskIds }) {
     taskIds: taskIds ? taskIds : [],
     type: !type ? 0 : type,
     _: "Project",
+    updatedAt: new Date().getTime(),
   };
 }

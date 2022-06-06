@@ -3,6 +3,7 @@ import { createContext, useReducer, useContext } from "react";
 import { useEffect } from "react";
 //data
 import appData from "../data/app-data";
+import navigationData from "../data/nav-data";
 
 //contexts
 const defaultTasks = {};
@@ -26,9 +27,14 @@ export function TasksProvider({ children }) {
   useEffect(() => {
     localStorage.setItem("STORAGE", JSON.stringify(state));
   }, [state]);
+
+  const navigation = navigationData({ ...state });
+
   return (
     <DispatchContext.Provider value={dispatch}>
-      <TasksContext.Provider value={state}>{children}</TasksContext.Provider>
+      <TasksContext.Provider value={{ ...state, navigation }}>
+        {children}
+      </TasksContext.Provider>
     </DispatchContext.Provider>
   );
 }

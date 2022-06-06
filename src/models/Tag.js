@@ -8,5 +8,6 @@ export default function ({ id, title, color, type }) {
     taskIds: [],
     type: !type ? 0 : type,
     _: "Tag",
+    updatedAt: new Date().getTime(),
   };
 }

@@ -2,8 +2,9 @@ import { Droppable, Draggable } from "react-beautiful-dnd";
 import TaskItem from "../tasks/TaskItem";
 import Subtasks from "./Subtasks";
 import { VStack } from "@chakra-ui/react";
+import { memo } from "react";
 
-export default function Task({ task, type, index }) {
+function Task({ task, type, index }) {
   const props = styles[type];
   return (
     <Draggable draggableId={task.id} index={index} key={task.id}>
@@ -47,3 +48,8 @@ const styles = {
     bgColor: "whiteAlpha.200",
   },
 };
+
+export default memo(Task, (prev, next) => {
+  if (prev.task.updatedAt === next.task.updatedAt) return true;
+  return false;
+});

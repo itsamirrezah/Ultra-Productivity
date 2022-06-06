@@ -147,13 +147,11 @@ function Tasks() {
         title={section.title}
         onSubmit={onEditSection}
       />
-      )
       <SearchTaskModal
         data={data}
         isOpen={isSearchModalOpen}
         onClose={onCloseSearchModal}
       />
-      )
     </>
   );
 }

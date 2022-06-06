@@ -16,8 +16,6 @@ function SearchTaskModal({ isOpen, onClose, data }) {
   const [searchResult, setSearchResult] = useState("");
   const ref = useRef();
 
-  console.log({ data });
-
   useOutsideClick({
     ref: ref,
     handler: () => {

@@ -1,4 +1,5 @@
 import { Link as ChakraLink, HStack, Heading } from "@chakra-ui/react";
+import { memo } from "react";
 import { Link } from "react-router-dom";
 function AccordionItem({ title, link, color, isSelected }) {
   const activeStyle = {
@@ -43,4 +44,8 @@ function AccordionItem({ title, link, color, isSelected }) {
   );
 }
 
-export default AccordionItem;
+export default memo(AccordionItem, (prev, next) => {
+  if (prev.updatedAt === next.updatedAt && prev.isSelected === next.isSelected)
+    return true;
+  return false;
+});

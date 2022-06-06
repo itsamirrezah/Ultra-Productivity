@@ -38,7 +38,7 @@ import {
 import { relativeTime } from "../../utils/utils";
 import EditTagModal from "./EditTagModal";
 
-function TaskItem({ task, props, handleDrag }) {
+export default function TaskItem({ task, props, handleDrag }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { id, title, isDone, tags, parentId } = task;
@@ -241,5 +241,3 @@ function TaskItem({ task, props, handleDrag }) {
     </>
   );
 }
-
-export default TaskItem;

@@ -20,5 +20,6 @@ export default function ({
     projectId: projectId ? projectId : null,
     subTaskIds: subTaskIds ? subTaskIds : [],
     tagIds: tagId ? [tagId] : [],
+    updatedAt: new Date().getTime(),
   };
 }
