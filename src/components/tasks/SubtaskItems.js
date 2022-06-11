@@ -49,33 +49,35 @@ function SubtaskItems({ items, parentId }) {
             ref={provided.innerRef}
           >
             {items &&
-              items.map((subtask, index) => (
-                <Draggable
-                  draggableId={subtask.id}
-                  index={index}
-                  key={subtask.id}
-                >
-                  {(provided) => (
-                    <Box
-                      w="full"
-                      m="0"
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                    >
-                      <TaskItem
-                        task={subtask}
-                        props={{
-                          alignSelf: "flex-end",
-                          bgColor: "whiteAlpha.200",
-                          py: "1",
-                          mt: "0",
-                        }}
-                        handleDrag={provided.dragHandleProps}
-                      />
-                    </Box>
-                  )}
-                </Draggable>
-              ))}
+              items.map((subtask, index) => {
+                return (
+                  <Draggable
+                    draggableId={subtask.id}
+                    index={index}
+                    key={subtask.id}
+                  >
+                    {(provided) => (
+                      <Box
+                        w="full"
+                        m="0"
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                      >
+                        <TaskItem
+                          task={subtask}
+                          props={{
+                            alignSelf: "flex-end",
+                            bgColor: "whiteAlpha.200",
+                            py: "1",
+                            mt: "0",
+                          }}
+                          handleDrag={provided.dragHandleProps}
+                        />
+                      </Box>
+                    )}
+                  </Draggable>
+                );
+              })}
             {provided.placeholder}
           </VStack>
         )}

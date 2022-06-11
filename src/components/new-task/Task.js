@@ -50,6 +50,7 @@ const styles = {
 };
 
 export default memo(Task, (prev, next) => {
+  if (prev.index !== next.index) return false;
   if (prev.task.updatedAt === next.task.updatedAt) return true;
   return false;
 });

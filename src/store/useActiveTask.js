@@ -7,12 +7,21 @@ import { useDispatch } from "./tasks-context";
 //actions
 import { setTaskTracked } from "../store/actions";
 
+const localActiveTask = localStorage.getItem("ACTIVE_TASK");
+
 //global states
-let activeTask = ActiveTask({});
+let activeTask = localActiveTask ? JSON.parse(localActiveTask) : ActiveTask({});
 let liveObservers = {};
 let observers = {};
-let isTrackStarted = false;
 let interval = null;
+
+if (activeTask.id) startTracking();
+
+window.addEventListener("beforeunload", () => {
+  if (activeTask?.id) {
+    localStorage.setItem("ACTIVE_TASK", JSON.stringify(activeTask));
+  }
+});
 
 function unsetActiveTask() {
   activeTask = ActiveTask({});
@@ -22,8 +31,18 @@ function unsetActiveTask() {
 
 function setActiveTask(task) {
   activeTask = ActiveTask(task);
-  localStorage.setItem("ACTIVE_TASK", JSON.stringify(activeTask));
   renderObservers(activeTask);
+}
+
+function startTracking() {
+  interval = setInterval(() => {
+    const now = new Date().getTime();
+    setActiveTask({
+      ...activeTask,
+      timeTracked: now - activeTask.lastTrackedAt + activeTask.timeTracked,
+      lastTrackedAt: now,
+    });
+  }, 1000);
 }
 
 //re-render observers
@@ -54,7 +73,6 @@ export default function useActiveTask({ shouldObserve = false, task = null }) {
   function unsetVariables() {
     clearInterval(interval);
     interval = null;
-    isTrackStarted = false;
   }
 
   function cleanup(active) {
@@ -73,34 +91,12 @@ export default function useActiveTask({ shouldObserve = false, task = null }) {
     subscribe(task.id, task.parentId);
     const { timeTracked: _, ...rest } = task;
     setActiveTask(rest);
+    startTracking();
   }
 
   function pause() {
     cleanup(activeTask);
   }
-
-  function startTracking() {
-    isTrackStarted = true;
-    interval = setInterval(() => {
-      const now = new Date().getTime();
-      setActiveTask({
-        ...activeTask,
-        timeTracked: now - activeTask.lastTrackedAt + activeTask.timeTracked,
-        lastTrackedAt: now,
-      });
-    }, 2000);
-    return () => clearInterval(interval);
-  }
-
-  useEffect(() => {
-    if (!isTrackStarted) {
-      const activeTaskDb = localStorage.getItem("ACTIVE_TASK");
-      if (activeTaskDb) {
-        activeTask = JSON.parse(activeTaskDb);
-        startTracking();
-      }
-    }
-  });
 
   //subscription
   useEffect(() => {

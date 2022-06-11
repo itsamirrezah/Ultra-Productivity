@@ -30,9 +30,23 @@ export default function reducer(state, action) {
 
   if (action.type === TASK_SET_TITLE) {
     const { id, title } = action.payload;
+    const parentId = tasks[id].parentId;
+    const parent = parentId
+      ? {
+          [parentId]: {
+            ...tasks[parentId],
+            updatedAt: new Date().getTime(),
+          },
+        }
+      : {};
+
     return {
       ...state,
-      tasks: { ...tasks, [id]: { ...tasks[id], title } },
+      tasks: {
+        ...tasks,
+        [id]: { ...tasks[id], title, updatedAt: new Date().getTime() },
+        ...parent,
+      },
     };
   }
 
