@@ -105,19 +105,17 @@ export default function useActiveTask({ shouldObserve = false, task = null }) {
   //subscription
   useEffect(() => {
     observers = { ...observers, [task ? task.id : "default"]: newObserver };
-    if (
-      shouldObserve ||
-      task.id === activeTask.id ||
-      task.subTaskIds.includes(activeTask.id)
-    )
-      liveObservers = {
-        ...liveObservers,
-        [task ? task.id : "default"]: newObserver,
-      };
+
+    if (shouldObserve) subscribe("default");
+    else if (task.id === activeTask.id) {
+      subscribe(task.id, task.parentId);
+    }
+
     return () => {
-      // eslint-disable-next-line no-unused-vars
-      const { [task ? task.id : "default"]: _, ...remain } = liveObservers;
-      liveObservers = remain;
+      const [id, parentId] = task
+        ? [task.id, task?.parentId]
+        : ["default", null];
+      unsubscribe(id, parentId);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newObserver]);

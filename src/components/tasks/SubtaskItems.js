@@ -1,13 +1,5 @@
 //imports
-import {
-  VStack,
-  IconButton,
-  Collapse,
-  Box,
-  Text,
-  HStack,
-  Icon,
-} from "@chakra-ui/react";
+import { VStack, IconButton, Box, Text, HStack, Icon } from "@chakra-ui/react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { useState } from "react";
 import { FaMinus, FaPlus, FaAngleDown } from "react-icons/fa";
@@ -58,33 +50,31 @@ function SubtaskItems({ items, parentId }) {
           >
             {items &&
               items.map((subtask, index) => (
-                <Collapse
+                <Draggable
+                  draggableId={subtask.id}
+                  index={index}
                   key={subtask.id}
-                  in={isCollapse ? !subtask.isDone : true}
-                  style={{ width: "100%" }}
                 >
-                  <Draggable draggableId={subtask.id} index={index}>
-                    {(provided) => (
-                      <Box
-                        w="full"
-                        m="0"
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                      >
-                        <TaskItem
-                          task={subtask}
-                          props={{
-                            alignSelf: "flex-end",
-                            bgColor: "whiteAlpha.200",
-                            py: "1",
-                            mt: "0",
-                          }}
-                          handleDrag={provided.dragHandleProps}
-                        />
-                      </Box>
-                    )}
-                  </Draggable>
-                </Collapse>
+                  {(provided) => (
+                    <Box
+                      w="full"
+                      m="0"
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                    >
+                      <TaskItem
+                        task={subtask}
+                        props={{
+                          alignSelf: "flex-end",
+                          bgColor: "whiteAlpha.200",
+                          py: "1",
+                          mt: "0",
+                        }}
+                        handleDrag={provided.dragHandleProps}
+                      />
+                    </Box>
+                  )}
+                </Draggable>
               ))}
             {provided.placeholder}
           </VStack>

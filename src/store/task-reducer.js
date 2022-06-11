@@ -183,6 +183,7 @@ export default function reducer(state, action) {
           [parentId]: {
             ...tasks[parentId],
             timeTracked: tasks[parentId].timeTracked + timeTracked,
+            updatedAt: new Date().getTime(),
           },
         }
       : {};
