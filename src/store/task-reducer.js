@@ -179,10 +179,11 @@ export default function reducer(state, action) {
       tasks: {
         ...updatedTasks,
         [parentId]: {
-          ...updatedTasks[parentId],
-          subTaskIds: updatedTasks[parentId].subTaskIds.filter(
+          ...tasks[parentId],
+          subTaskIds: tasks[parentId].subTaskIds.filter(
             (subId) => subId !== id
           ),
+          timeTracked: tasks[parentId].timeTracked - tasks[id].timeTracked,
           updatedAt: new Date().getTime(),
         },
       },

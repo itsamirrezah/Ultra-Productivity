@@ -75,27 +75,24 @@ export default function useActiveTask({ shouldObserve = false, task = null }) {
     interval = null;
   }
 
-  function cleanup(active) {
-    // eslint-disable-next-line no-unused-vars
-    const { lastTrackedAt, ...task } = active;
-    unsetVariables();
-    unsetActiveTask();
-    unsubscribe(active.id, active.parentId);
-    dispatch(setTaskTracked({ ...task }));
-  }
-
   function play(task) {
     if (activeTask.id) {
-      cleanup(activeTask, task.parentId);
+      pause();
     }
     subscribe(task.id, task.parentId);
+    // eslint-disable-next-line no-unused-vars
     const { timeTracked: _, ...rest } = task;
     setActiveTask(rest);
     startTracking();
   }
 
   function pause() {
-    cleanup(activeTask);
+    // eslint-disable-next-line no-unused-vars
+    const { lastTrackedAt, ...task } = activeTask;
+    unsetVariables();
+    unsubscribe(activeTask.id, activeTask.parentId);
+    unsetActiveTask();
+    dispatch(setTaskTracked({ ...task }));
   }
 
   //subscription
@@ -107,6 +104,7 @@ export default function useActiveTask({ shouldObserve = false, task = null }) {
       subscribe(task.id, task.parentId);
     }
 
+    //unsubscribe
     return () => {
       const [id, parentId] = task
         ? [task.id, task?.parentId]
@@ -115,6 +113,12 @@ export default function useActiveTask({ shouldObserve = false, task = null }) {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newObserver]);
+
+  const { parentId, title, id } = task || {};
+  useEffect(() => {
+    if (activeTask && activeTask.id === id)
+      setActiveTask({ ...activeTask, parentId, title });
+  }, [parentId, title]);
 
   return { activeTask, play, pause, dispatch };
 }
