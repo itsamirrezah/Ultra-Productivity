@@ -1,34 +1,38 @@
 //imports
-import { useState, useRef } from "react";
-import { Flex, Input, useOutsideClick } from "@chakra-ui/react";
+import { useState } from "react";
+import { Flex, Input } from "@chakra-ui/react";
 import { FaHashtag } from "react-icons/fa";
 //components
 import Modal from "../UI/Modal";
 import TagItem from "../tags/TagItem";
 import SearchCard from "../UI/SearchCard";
 import SearchItem from "../search/SearchItem";
-import useTasks from "../../store/tasks-context";
+import useTasks, { useDispatch } from "../../store/tasks-context";
+import { addTaskTag } from "../../store/actions";
 
-function EditTagModal({ isOpen, onClose, task, onSubmit }) {
+function EditTagModal({ isOpen, onClose, task }) {
   const [isSearchBox, setSearchBox] = useState(false);
-  const [selectedTags, setSelectedTags] = useState(task.tagIds);
+  const [selectedTags, setSelectedTags] = useState(null);
   const [searchResult, setSearchResult] = useState("");
   const data = useTasks();
-  const ref = useRef();
+  const dispatch = useDispatch();
 
-  useOutsideClick({
-    ref: ref,
-    handler: () => setSearchBox(false),
-  });
+  const selected = selectedTags || task.tagIds;
 
-  function onSubmitHandler() {
-    onSubmit(selectedTags);
+  function onCloseHandler() {
+    setSearchBox(false);
+    setSearchResult("");
+    setSelectedTags(null);
     onClose();
+  }
+  function onSubmitHandler() {
+    dispatch(addTaskTag({ id: task.id, tagIds: selected }));
+    onCloseHandler();
   }
 
   function onRemoveTag(tagId) {
-    if (task.projectId || selectedTags.length > 1)
-      setSelectedTags((state) => state.filter((id) => id !== tagId));
+    if (task.projectId || selected.length > 1)
+      setSelectedTags(selected.filter((id) => id !== tagId));
   }
 
   function search(e) {
@@ -38,13 +42,13 @@ function EditTagModal({ isOpen, onClose, task, onSubmit }) {
 
   function onAddTag(tag) {
     setSearchBox(false);
-    setSelectedTags((state) => [...state, tag.id]);
+    setSelectedTags([...selected, tag.id]);
     setSearchResult("");
   }
   return (
     <Modal
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={onCloseHandler}
       size="lg"
       title={`Edit Tag for "${task.title}"`}
       onSubmit={onSubmitHandler}
@@ -53,16 +57,16 @@ function EditTagModal({ isOpen, onClose, task, onSubmit }) {
       <Flex
         pos="relative"
         flexWrap="wrap"
+        gridGap={2}
         p="1"
         transition="all 0.7s"
         _focusWithin={{
           borderBottom: "1px solid",
           borderBottomColor: "lightblue",
         }}
-        ref={ref}
         borderBottom="2px solid gray"
       >
-        {selectedTags.map((tagId) => {
+        {selected.map((tagId) => {
           const tag = data.tags[tagId];
           if (tag.type < 0) return;
           return (
@@ -89,7 +93,7 @@ function EditTagModal({ isOpen, onClose, task, onSubmit }) {
               const tag = data.tags[id];
               if (
                 tag.type < 0 ||
-                selectedTags.includes(id) ||
+                selected.includes(id) ||
                 (searchResult &&
                   tag.title.toLowerCase().indexOf(searchResult.toLowerCase()) <
                     0)

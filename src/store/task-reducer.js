@@ -17,7 +17,7 @@ import {
   REORDER_TASKS,
   REORDER_SUBTASKS,
 } from "./actions";
-import { removeItem, reorder } from "../utils/utils";
+import { mergeArray, removeItem, reorder } from "../utils/utils";
 //model
 import Task from "../models/Task";
 import Project from "../models/Project";
@@ -223,25 +223,19 @@ export default function reducer(state, action) {
 
     let updatedTags = tags;
 
-    // remove old taskId from each tag
-    task.tagIds.forEach((tId) => {
-      updatedTags = {
-        ...updatedTags,
-        [tId]: {
-          ...tags[tId],
-          taskIds: tags[tId].taskIds.filter((taskId) => taskId !== task.id),
-        },
-      };
-    });
-    //add updated taskId to each tag
-    tagIds.forEach((tId) => {
-      updatedTags = {
-        ...updatedTags,
-        [tId]: {
-          ...tags[tId],
-          taskIds: [...updatedTags[tId].taskIds, task.id],
-        },
-      };
+    const mergedTagIds = mergeArray(task.tagIds, tagIds);
+
+    mergedTagIds.forEach((tId) => {
+      let taskIds = [];
+      if (!tagIds.includes(tId)) {
+        // DELETE
+        taskIds = tags[tId].taskIds.filter((taskId) => taskId !== task.id);
+      } else if (!task.tagIds.includes(tId)) {
+        // ADD
+        taskIds = [...updatedTags[tId].taskIds, task.id];
+      } else return;
+
+      updatedTags = { ...updatedTags, [tId]: { ...updatedTags[tId], taskIds } };
     });
 
     return {

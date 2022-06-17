@@ -12,13 +12,13 @@ export default function ({
   timeTracked,
 }) {
   return {
-    id: id ? id : uuid(),
-    title: title ? title : "",
-    isDone: isDone ? isDone : false,
-    timeTracked: timeTracked ? timeTracked : 0,
-    parentId: parentId ? parentId : null,
-    projectId: projectId ? projectId : null,
-    subTaskIds: subTaskIds ? subTaskIds : [],
+    id: id || uuid(),
+    title: title || "",
+    isDone: isDone || false,
+    timeTracked: timeTracked || 0,
+    parentId: parentId || null,
+    projectId: projectId || null,
+    subTaskIds: subTaskIds || [],
     tagIds: tagId ? [tagId] : [],
     updatedAt: new Date().getTime(),
   };

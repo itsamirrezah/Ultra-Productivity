@@ -4,6 +4,18 @@ export function removeItem(obj, key) {
   return remain;
 }
 
+export function mergeArray(...arrs) {
+  let mergedArr = [];
+
+  arrs.forEach((arr) => {
+    arr.forEach((it) => {
+      if (!mergedArr.includes(it)) mergedArr = [...mergedArr, it];
+    });
+  });
+
+  return mergedArr;
+}
+
 export function reorder(source, destination = null, start, end) {
   const mutableSource = Array.from(source);
   const mutableDestination = destination

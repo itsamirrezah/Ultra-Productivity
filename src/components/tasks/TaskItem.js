@@ -33,7 +33,6 @@ import {
   addTaskToDay,
   removeTaskFromDay,
   setTaskTitle,
-  addTaskTag,
 } from "../../store/actions";
 import { relativeTime } from "../../utils/utils";
 import EditTagModal from "./EditTagModal";
@@ -220,7 +219,7 @@ export default function TaskItem({ task, props, handleDrag }) {
             />
             {/* display tags if available */}
             {tags && (
-              <Flex justifyContent="flex-start">
+              <Flex justifyContent="flex-start" gridGap={1}>
                 {tags.map((tag) => (
                   <TagItem key={tag.id} tag={tag} size="md" />
                 ))}
@@ -232,12 +231,7 @@ export default function TaskItem({ task, props, handleDrag }) {
           </Box>
         </HStack>
       </Box>
-      <EditTagModal
-        isOpen={isOpen}
-        onClose={onClose}
-        task={task}
-        onSubmit={(tagIds) => dispatch(addTaskTag({ id: task.id, tagIds }))}
-      />
+      <EditTagModal isOpen={isOpen} onClose={onClose} task={task} />
     </>
   );
 }

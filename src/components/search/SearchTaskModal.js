@@ -1,10 +1,5 @@
-import { useRef, useState } from "react";
-import {
-  Box,
-  Input,
-  useOutsideClick,
-  Link as ChakraLink,
-} from "@chakra-ui/react";
+import { useState } from "react";
+import { Box, Input, Link as ChakraLink } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import Modal from "../UI/Modal";
 import SearchCard from "../UI/SearchCard";
@@ -14,16 +9,12 @@ import { FaListUl, FaHashtag } from "react-icons/fa";
 function SearchTaskModal({ isOpen, onClose, data }) {
   const [isSearchShown, setSearchShown] = useState(false);
   const [searchResult, setSearchResult] = useState("");
-  const ref = useRef();
 
-  useOutsideClick({
-    ref: ref,
-    handler: () => {
-      setSearchShown(false);
-      setSearchResult("");
-      onClose();
-    },
-  });
+  function onCloseHandler() {
+    setSearchShown(false);
+    setSearchResult("");
+    onClose();
+  }
 
   function search(e) {
     const input = e.target.value;
@@ -34,8 +25,13 @@ function SearchTaskModal({ isOpen, onClose, data }) {
     onClose();
   }
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="xl" title="Search Tasks">
-      <Box pos="relative" ref={ref}>
+    <Modal
+      isOpen={isOpen}
+      onClose={onCloseHandler}
+      size="xl"
+      title="Search Tasks"
+    >
+      <Box pos="relative">
         <Input
           w="full"
           variant="unstyled"

@@ -118,7 +118,7 @@ export default function useActiveTask({ shouldObserve = false, task = null }) {
   useEffect(() => {
     if (activeTask && activeTask.id === id)
       setActiveTask({ ...activeTask, parentId, title });
-  }, [parentId, title]);
+  }, [parentId, title, id]);
 
   return { activeTask, play, pause, dispatch };
 }
