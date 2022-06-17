@@ -1,5 +1,5 @@
 //imports
-import { useLocation } from "react-router-dom";
+import { Redirect, useLocation } from "react-router-dom";
 import { VStack, useDisclosure } from "@chakra-ui/react";
 //components
 import Header from "../tasks/Header";
@@ -44,6 +44,7 @@ function Tasks() {
   // eslint-disable-next-line no-unused-vars
   const [_, filter, id] = useLocation().pathname.split("/");
   const section = data[filter][id];
+  if (!section) return <Redirect to="/tags/today" />;
   const filteredTasks = section.taskIds.map((tId) => {
     const task = data.tasks[tId];
     task.subtasks = task.subTaskIds.map((sId) => data.tasks[sId]);
@@ -116,9 +117,8 @@ function Tasks() {
         py="8"
         bgColor="#28112B"
         minH="100vh"
-        px={["2", "4", "8"]}
+        px={["2", "4", "16", "32"]}
       >
-        {/* header */}
         <Header
           availableTask={getAvailableTask}
           title={section.title}
@@ -129,9 +129,7 @@ function Tasks() {
           onAddTaskHandler={onAddTaskHandler}
         />
         <VStack w="full" spacing="1">
-          {/* working status */}
           <Status time={relativeTime(workTimes)} />
-          {/* taskItems */}
           <DragDropContext onDragEnd={onDragEnd}>
             <TaskList tasks={filteredTasks} type="task" />
           </DragDropContext>

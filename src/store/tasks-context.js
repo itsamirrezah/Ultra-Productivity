@@ -14,7 +14,7 @@ import reducer from "./task-reducer";
 
 function initializer() {
   const db = localStorage.getItem("STORAGE");
-  if (!db) {
+  if (!db && process.env.NODE_ENV === "development") {
     const { projects, tags, tasks } = appData();
     return { projects, tags, tasks };
   }

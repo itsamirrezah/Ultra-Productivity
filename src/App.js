@@ -10,9 +10,7 @@ function App() {
   const location = useLocation();
   return (
     <HStack alignItems="stretch" overflow="hidden" spacing="0">
-      {/* side nav section */}
       <SideNav />
-      {/* tasks  section*/}
       <Route exact path="/">
         <Redirect to="/tags/today" />
       </Route>

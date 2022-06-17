@@ -31,6 +31,7 @@ export default function Subtasks({
         <IconButton
           onClick={() => setCollapseMode((state) => !state)}
           size="xs"
+          boxSize={4}
           rounded="lg"
           pos="absolute"
           right="100%"

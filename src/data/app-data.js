@@ -54,7 +54,6 @@ function generateTasks() {
   }
 }
 
-// todo: potential bug
 function generateRelation() {
   const projectList = Object.keys(projects);
   const tagList = Object.keys(tags);

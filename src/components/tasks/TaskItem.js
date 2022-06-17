@@ -52,7 +52,7 @@ export default function TaskItem({ task, props, handleDrag }) {
   const timeTrackedStr = relativeTime(timeTracked);
 
   function setTitleHandler() {
-    if (title !== input) dispatch(setTaskTitle({ id, title: input }));
+    if (input && title !== input) dispatch(setTaskTitle({ id, title: input }));
   }
 
   function setDoneHandler() {
@@ -114,7 +114,6 @@ export default function TaskItem({ task, props, handleDrag }) {
           rounded="lg"
           bgColor={isActive ? "whiteAlpha.200" : "transparent"}
         ></Box>
-        {/* actions */}
         <Flex
           className="task-item-actions"
           zIndex="1"
@@ -217,7 +216,6 @@ export default function TaskItem({ task, props, handleDrag }) {
               }}
               transition="transform 123ms cubic-bezier(.4,0,1,1)"
             />
-            {/* display tags if available */}
             {tags && (
               <Flex justifyContent="flex-start" gridGap={1}>
                 {tags.map((tag) => (

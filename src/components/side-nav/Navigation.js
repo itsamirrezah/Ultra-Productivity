@@ -24,9 +24,7 @@ function Navigation() {
       flexShrink={0}
       bgColor="#28112B"
     >
-      {/* logo or something */}
       <Logo />
-      {/* navigation items */}
       <NavItems />
     </VStack>
   );

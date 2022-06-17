@@ -54,7 +54,6 @@ function CreateNewModal({
           </InputGroup>
           <HStack w="full" spacing="4">
             <Text fontSize="larger">Color</Text>
-            {/* colors */}
             <ColorItems
               currentColor={selectedColor || color}
               setColor={setColor}
