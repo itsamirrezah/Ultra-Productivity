@@ -40,6 +40,7 @@ function CreateNewModal({
       size="lg"
       submitCaption="Save"
       onSubmit={onSubmitHandler}
+      enabled={!input}
     >
       <FormControl>
         <VStack spacing={4}>

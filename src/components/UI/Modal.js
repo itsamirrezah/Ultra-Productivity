@@ -15,6 +15,7 @@ function Modal({
   size,
   submitCaption,
   onSubmit,
+  enabled,
   children,
 }) {
   return (
@@ -25,7 +26,11 @@ function Modal({
         <ModalCloseButton />
         {children}
         <ModalFooter px="1">
-          {onSubmit && <Button onClick={onSubmit}>{submitCaption}</Button>}
+          {onSubmit && (
+            <Button onClick={onSubmit} disabled={enabled}>
+              {submitCaption}
+            </Button>
+          )}
         </ModalFooter>
       </ModalContent>
     </ChakraModel>
