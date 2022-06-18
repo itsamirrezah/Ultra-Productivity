@@ -135,7 +135,7 @@ function generateActiveTask() {
   activeTask = ActiveTask({ ...randomTask });
 }
 
-export default function () {
+export default function generateDummy() {
   if (!Object.keys(projects).length) generateProjects();
   if (!Object.keys(tags).length) generateTags();
   if (!Object.keys(tasks).length) {

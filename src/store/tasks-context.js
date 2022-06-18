@@ -4,9 +4,16 @@ import { useEffect } from "react";
 //data
 import appData from "../data/app-data";
 import navigationData from "../data/nav-data";
+import Tag from "../models/Tag";
 
 //contexts
-const defaultTasks = {};
+const defaultState = {
+  tags: {
+    today: Tag({ id: "today", title: "Today", color: "green", type: -1 }),
+  },
+  projects: {},
+  tasks: {},
+};
 const TasksContext = createContext();
 const DispatchContext = createContext();
 // reducer
@@ -17,12 +24,13 @@ function initializer() {
   if (!db && process.env.NODE_ENV === "development") {
     const { projects, tags, tasks } = appData();
     return { projects, tags, tasks };
-  }
+  } else if (!db && process.env.NODE_ENV === "production") return defaultState;
+
   return JSON.parse(db);
 }
 
 export function TasksProvider({ children }) {
-  const [state, dispatch] = useReducer(reducer, defaultTasks, initializer);
+  const [state, dispatch] = useReducer(reducer, defaultState, initializer);
 
   useEffect(() => {
     localStorage.setItem("STORAGE", JSON.stringify(state));
