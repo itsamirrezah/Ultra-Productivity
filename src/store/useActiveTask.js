@@ -17,8 +17,8 @@ let interval = null;
 
 if (activeTask.id) startTracking();
 
-window.addEventListener("beforeunload", () => {
-  if (activeTask?.id) {
+window.addEventListener("visibilitychange", (event) => {
+  if (document.visibilityState === "hidden" && activeTask?.id) {
     localStorage.setItem("ACTIVE_TASK", JSON.stringify(activeTask));
   }
 });
